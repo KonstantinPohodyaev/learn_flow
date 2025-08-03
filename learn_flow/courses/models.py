@@ -96,7 +96,7 @@ class Module(models.Model):
         verbose_name = MODULE_VERBOSE_NAME
         verbose_name_plural = MODULE_VERBOSE_NAME_PLURAL
         default_related_name = 'modules'
-        ordering = ['title', 'course']
+        ordering = ['title', 'course__title']
 
     def __str__(self):
         return self.title
