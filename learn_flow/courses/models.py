@@ -32,6 +32,18 @@ LESSON_FILE_HELP_TEXT = 'Прикрепите файл к уроку'
 LESSON_VERBOSE_NAME = 'Урок'
 LESSON_VERBOSE_NAME_PLURAL = 'Уроки'
 
+COURSE_PROGRESS_USER_VERBOSE_NAME = 'Пользователь'
+COURSE_PROGRESS_COURSE_VERBOSE_NAME = 'Курс'
+COURSE_PROGRESS_LESSON_VERBOSE_NAME = 'Урок'
+COURSE_PROGRESS_COMPLETED_VERBOSE_NAME = 'Статус курса'
+COURSE_PROGRESS_COMPLETED_HELP_TEXT = 'Укажите статус курса'
+COURSE_PROGRESS_VERBOSE_NAME = 'Прогресс курса'
+COURSE_PROGRESS_VERBOSE_NAME_PLURAL = 'Прогресс курсов'
+
+CERTIFICATE_USER_VERBOSE_NAME = 'Пользователь'
+CERTIFICATE_COURSE_VERBOSE_NAME = 'Курс'
+CERTIFICATE_FILE_VERBOSE_NAME = 'Файл диплома'
+
 
 class Course(models.Model):
     """Модель курса.
@@ -149,3 +161,55 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f'{self.title}: {self.content[:30]}...'
+
+
+class CourseProgress(models.Model):
+    user = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.CASCADE,
+        verbose_name=COURSE_PROGRESS_USER_VERBOSE_NAME
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name=COURSE_PROGRESS_COURSE_VERBOSE_NAME
+    )
+    current_lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        verbose_name=COURSE_PROGRESS_LESSON_VERBOSE_NAME
+    )
+    completed = models.BooleanField(
+        COURSE_PROGRESS_COMPLETED_VERBOSE_NAME,
+        default=False,
+        help_text=COURSE_PROGRESS_COMPLETED_HELP_TEXT
+    )
+
+    class Meta:
+        verbose_name = COURSE_PROGRESS_VERBOSE_NAME
+        verbose_name_plural = COURSE_PROGRESS_VERBOSE_NAME_PLURAL
+        default_related_name = '%(class)ss'
+        ordering = ['user__email', 'course__title']
+
+    def __str__(self):
+        return (
+            f'{self.user.email}: {self.course.title}'
+            f' - {self.current_lesson.title}'
+        )
+
+
+class Certificate(models.Model):
+    user = models.ForeignKey(
+        'users.CustomUser',
+        on_delete=models.CASCADE,
+        verbose_name=CERTIFICATE_USER_VERBOSE_NAME
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        verbose_name=CERTIFICATE_COURSE_VERBOSE_NAME
+    )
+    file = models.FileField(
+        CERTIFICATE_FILE_VERBOSE_NAME,
+        upload_to='certificates/'
+    )
