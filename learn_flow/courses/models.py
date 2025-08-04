@@ -164,6 +164,15 @@ class Lesson(models.Model):
 
 
 class CourseProgress(models.Model):
+    """Модель для отслеживания прогресса пользователя по курсу.
+    
+    Attributes:
+        user (CustomUser): Пользователь, проходящий курс
+        course (Course): Курс, по которому отслеживается прогресс
+        current_lesson (Lesson): Текущий урок, на котором находится пользователь
+        completed (bool): Флаг завершения курса
+    """
+
     user = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.CASCADE,
@@ -190,6 +199,12 @@ class CourseProgress(models.Model):
         verbose_name_plural = COURSE_PROGRESS_VERBOSE_NAME_PLURAL
         default_related_name = '%(class)ss'
         ordering = ['user__email', 'course__title']
+        constraints = {
+            models.UniqueConstraint(
+                fields=['user', 'course'],
+                name='%(app_label)s_%(class)s_user_course_unique_together'
+            )
+        }
 
     def __str__(self):
         return (
@@ -199,6 +214,14 @@ class CourseProgress(models.Model):
 
 
 class Certificate(models.Model):
+    """Модель сертификата о прохождении курса.
+    
+    Attributes:
+        user (CustomUser): Пользователь, получивший сертификат
+        course (Course): Курс, за который выдан сертификат
+        file (File): Файл сертификата
+    """
+
     user = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.CASCADE,

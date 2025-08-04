@@ -34,6 +34,14 @@ USER_ANSWER_VERBOSE_NAME_PLURAL = 'Ответы пользователей'
 
 
 class Quiz(models.Model):
+    """Модель теста/квиза, привязанного к уроку.
+    
+    Attributes:
+        title (str): Название теста
+        lesson (Lesson): Урок, к которому привязан тест
+        passing_score (int): Проходной балл для успешного завершения
+    """
+
     title = models.CharField(
         QUIZ_TITLE_VERBOSE_NAME,
         max_length=QUIZ_TITLE_MAX_LENGTH,
@@ -61,6 +69,13 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
+    """Модель вопроса в тесте.
+    
+    Attributes:
+        quiz (Quiz): Тест, к которому относится вопрос
+        text (str): Текст вопроса
+    """
+
     quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
@@ -82,6 +97,14 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
+    """Модель варианта ответа на вопрос.
+    
+    Attributes:
+        question (Question): Вопрос, к которому относится вариант
+        text (str): Текст варианта ответа
+        is_correct (bool): Является ли вариант правильным
+    """
+
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE,
@@ -106,6 +129,14 @@ class Answer(models.Model):
 
 
 class UserAnswer(models.Model):
+    """Модель ответа пользователя на вопрос теста.
+    
+    Attributes:
+        user (CustomUser): Пользователь, давший ответ
+        question (Question): Вопрос теста
+        answer (Answer): Выбранный вариант ответа
+    """
+
     user = models.ForeignKey(
         'users.CustomUser',
         on_delete=models.CASCADE,
