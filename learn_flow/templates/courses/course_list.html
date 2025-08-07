@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  Список курсов
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="card bg-dark text-light rounded-4 shadow-lg p-4">
+    <h2 class="mb-4 p-3 text-light text-center rounded shadow">
+      🎓 Доступные курсы
+    </h2>
+
+    <div class="row g-4">
+      {% for course in object_list %}
+        <div class="col-sm-6 col-lg-4">
+          <div class="card text-light bg-secondary h-100 border-0 shadow rounded-4 hover-shadow">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-info fw-bold">{{ course.title }}</h5>
+              <p class="card-text text-light mb-4">
+                {{ course.description|truncatewords:20 }}
+              </p>
+              <a href="{% url 'courses:course_detail' course.pk %}"
+                 class="btn btn-outline-info rounded-pill mt-auto w-100">
+                Подробнее →
+              </a>
+            </div>
+            <div class="card-footer text-info small bg-dark">
+              👤 Автор: {{ course.owner.email }}
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <p class="text-center text-secondary fs-5">Курсы пока не добавлены.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .hover-shadow:hover {
+    transform: translateY(-5px);
+    transition: 0.3s ease;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.2) !important;
+  }
+</style>
+{% endblock %}

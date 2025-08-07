@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Урок: {{ lesson.title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="card bg-dark text-light border-secondary shadow-sm rounded-4">
+      <div class="card-header text-center p-4 fs-2 fw-bold">
+        Урок: <span class="text-success">{{ lesson.title }}</span>
+      </div>
+      <div class="card-body px-5 py-4">
+        <h3 class="text-info mb-3">Содержание</h3>
+        <p class="text-secondary mb-4" style="line-height: 1.6;">
+          {{ lesson.content|linebreaks }}
+        </p>
+
+        {% if lesson.video_url %}
+          <h4 class="text-info mb-3">Видео</h4>
+          <div class="ratio ratio-16x9 mb-4 rounded overflow-hidden shadow">
+            <iframe src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
+          </div>
+        {% endif %}
+
+        {% if lesson.file %}
+          <h5 class="text-info mb-3">Прикреплённый файл</h5>
+          <a class="btn btn-outline-light rounded-pill px-4" href="{{ lesson.file.url }}" download>
+            📥 Скачать файл
+          </a>
+        {% endif %}
+      </div>
+      <div class="card-footer text-center bg-secondary bg-opacity-25 py-3">
+        <a href="#" class="btn btn-outline-success btn-lg rounded-pill px-5">
+          Пройти тест
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

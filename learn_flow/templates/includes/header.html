@@ -1,22 +1,35 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
   <div class="container">
-    <a class="navbar-brand" href="{% url 'courses:courses_list' %}">Курсы</a>
+    <a class="navbar-brand text-info fw-bold" href="{% url 'courses:course_list' %}">
+      🎓 Курсы
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'courses:courses_list' %}">Главная</a>
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item mx-2">
+          <a class="nav-link text-light" href="{% url 'courses:course_list' %}">🏠 Главная</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">О нас</a>
+        <li class="nav-item mx-2">
+          <a class="nav-link text-light" href="#">ℹ️ О нас</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Контакты</a>
+        <li class="nav-item mx-2">
+          <a class="nav-link text-light" href="#">📞 Контакты</a>
         </li>
+
         {% if user.is_superuser %}
-          <a class="nav-link" href="{% url 'courses:courses_create' %}">Создать курс</a>
+          <li class="nav-item mx-2">
+            <a class="btn btn-sm btn-outline-warning rounded-pill px-3" href="{% url 'courses:course_create' %}">
+              ➕ Новый курс
+            </a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="btn btn-sm btn-outline-info rounded-pill px-3" href="{% url 'admin:index' %}">
+              ⚙️ Админка
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>

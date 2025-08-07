@@ -11,7 +11,9 @@
   </head>
   <body>
     {% include 'includes/header.html' %}
-    {% block content %}{% endblock %}
+    <div class="container-fluid py-5" style="background-color: #858787; min-height: 100vh;">
+      {% block content %}{% endblock %}
+    </div>
     {% include 'includes/footer.html' %}
   </body>
 </html>
