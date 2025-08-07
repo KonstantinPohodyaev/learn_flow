@@ -34,12 +34,26 @@
           </div>
         {% endfor %}
         {% if user.is_superuser %}
-          <div class="col-md-6 mx-auto col-lg-4 d-flex align-items-start">
-            <a class="btn btn-outline-info w-100 rounded-pill shadow"
-               href="{% url 'courses:lesson_create' module.course.pk module.pk %}">
-              ➕ Добавить урок
-            </a>
-          </div>
+          <ul class="nav justify-content-center mt-4 bg-dark p-3 rounded shadow-sm">
+            <li class="nav-item mx-2">
+              <a href="{% url 'courses:lesson_create' module.course.pk module.pk %}" 
+                class="btn btn-outline-success btn-sm rounded-pill px-3">
+                ➕ Добавить урок
+              </a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="" 
+                class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                ✏️ Редактировать модуль
+              </a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="{% url 'courses:module_delete' module.pk %}" 
+                class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                🗑️ Удалить модуль
+              </a>
+            </li>
+          </ul>
         {% endif %}
       </div>
     </div>

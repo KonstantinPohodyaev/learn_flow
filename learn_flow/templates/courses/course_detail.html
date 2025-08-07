@@ -16,45 +16,58 @@
       </div>
     </div>
     <div class="card bg-dark text-light rounded-4 shadow-sm mx-auto my-5" style="max-width: 900px;">
-  <div class="card-header text-white fs-4 text-center rounded-top">
-    📦 Модули курса
-  </div>
-  <div class="card-body">
-    <div class="row g-4">
-      {% for module in modules %}
-        <div class="col-sm-6 col-lg-4">
-          <div class="card text-light bg-secondary h-100 border-0 shadow rounded-3 hover-shadow">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title text-info fw-bold">
-                🧩 {{ module.title }}
-              </h5>
-              <p class="text-secondary mb-4">
-                Входит в курс <strong>{{ course.title }}</strong>
-              </p>
-              <a href="{% url 'courses:module_detail' course.pk module.pk %}"
-                 class="btn btn-outline-info mt-auto rounded-pill">
-                Подробнее о модуле →
-              </a>
-            </div>
-          </div>
-        </div>
-      {% empty %}
-        <p class="text-info text-center">Модули пока не добавлены</p>
-      {% endfor %}
-    </div>
-    {% if user.is_superuser %}
-      <div class="text-center mt-4">
-        <a class="btn btn-outline-success btn-lg rounded-pill shadow"
-           href="{% url 'courses:module_create' course.pk %}">
-          ➕ Добавить модуль
-        </a>
+      <div class="card-header text-white fs-4 text-center rounded-top">
+        📦 Модули курса
       </div>
-    {% endif %}
-  </div>
-</div>
+      <div class="card-body">
+        <div class="row g-4">
+          {% for module in modules %}
+            <div class="col-sm-6 col-lg-4">
+              <div class="card text-light bg-secondary h-100 border-0 shadow rounded-3 hover-shadow">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title text-info fw-bold">
+                    🧩 {{ module.title }}
+                  </h5>
+                  <p class="text-secondary mb-4">
+                    Входит в курс <strong>{{ course.title }}</strong>
+                  </p>
+                  <a href="{% url 'courses:module_detail' course.pk module.pk %}"
+                    class="btn btn-outline-info mt-auto rounded-pill">
+                    Подробнее о модуле →
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-info text-center">Модули пока не добавлены</p>
+          {% endfor %}
+        </div>
+        {% if user.is_superuser %}
+          <ul class="nav justify-content-center mt-4 bg-dark p-3 rounded shadow-sm">
+            <li class="nav-item mx-2">
+              <a href="{% url 'courses:module_create' course.pk %}" 
+                class="btn btn-outline-success btn-sm rounded-pill px-3">
+                ➕ Добавить модуль
+              </a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="" 
+                class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                ✏️ Редактировать курс
+              </a>
+            </li>
+            <li class="nav-item mx-2">
+              <a href="{% url 'courses:course_delete' course.pk %}" 
+                class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                🗑️ Удалить курс
+              </a>
+            </li>
+          </ul>
+        {% endif %}
 
+      </div>
+    </div>
   </div>
-
   <style>
     .hover-shadow:hover {
       transform: translateY(-5px);

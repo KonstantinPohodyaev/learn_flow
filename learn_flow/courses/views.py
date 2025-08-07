@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView, DetailView
+from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.urls import reverse_lazy
 
 from courses.models import Course, Module, Lesson
@@ -39,6 +39,13 @@ class CourseDetailView(DetailView):
         return context
 
 
+class CourseDeleteView(DeleteView):
+    model = Course
+    template_name = 'courses/course_delete.html'
+    pk_url_kwarg = 'course_id'
+    success_url = reverse_lazy('courses:course_list')
+
+
 class ModuleCreateView(CreateView):
     model = Module
     template_name = 'courses/module_create.html'
@@ -65,6 +72,17 @@ class ModuleDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['lessons'] = self.get_object().lessons.all()
         return context
+
+
+class ModuleDeleteView(DeleteView):
+    model = Module
+    template_name = 'courses/module_delete.html'
+    pk_url_kwarg = 'module_id'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'courses:course_detail', args=[self.get_object().course.pk]
+        )
 
 
 class LessonCreateView(CreateView):
