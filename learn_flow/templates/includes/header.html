@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'courses:courses_list' %}">Курсы</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'courses:courses_list' %}">Главная</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">О нас</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Контакты</a>
+        </li>
+        {% if user.is_superuser %}
+          <a class="nav-link" href="{% url 'courses:courses_create' %}">Создать курс</a>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

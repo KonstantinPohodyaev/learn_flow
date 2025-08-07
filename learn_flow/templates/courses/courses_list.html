@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+    Список курсов
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4 text-light text-center">Список курсов</h2>
+    <div class="row g-4">
+        {% for course in object_list %}
+            <div class="col-sm-6 col-lg-4">
+                <div class="card text-light bg-dark h-100 border-secondary shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title text-info fw-bold">{{ course.title }}</h5>
+                        <p class="card-text text-secondary mb-4">{{ course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'courses:detail' course.pk %}" 
+                           class="btn btn-outline-info mt-auto w-100">
+                            Подробнее
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted small">
+                        Автор: {{ course.owner.email }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-light text-center">Курсы пока не добавлены.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

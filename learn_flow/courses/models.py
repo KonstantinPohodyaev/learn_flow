@@ -199,12 +199,12 @@ class CourseProgress(models.Model):
         verbose_name_plural = COURSE_PROGRESS_VERBOSE_NAME_PLURAL
         default_related_name = '%(class)ss'
         ordering = ['user__email', 'course__title']
-        constraints = {
+        constraints = [
             models.UniqueConstraint(
                 fields=['user', 'course'],
                 name='%(app_label)s_%(class)s_user_course_unique_together'
             )
-        }
+        ]
 
     def __str__(self):
         return (

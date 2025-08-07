@@ -1,0 +1,17 @@
+{% load django_bootstrap5 %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% bootstrap_css %}
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    {% include 'includes/header.html' %}
+    {% block content %}{% endblock %}
+    {% include 'includes/footer.html' %}
+  </body>
+</html>
