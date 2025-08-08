@@ -32,19 +32,37 @@
           </div>
         {% endfor %}
 
-        <div class="text-center mt-4">
-          <button type="submit" class="btn btn-outline-success rounded-pill px-4 py-2">
-            ✅ Отправить ответы
-          </button>
-        </div>
+        {% if quiz.questions.exists %}
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-outline-success rounded-pill">
+              ✅ Отправить ответы
+            </button>
+          </div>
+        {% else %}
+          <div class="text-center text-warning mt-4 fs-3">
+            Для этого теста вопросы еще не загружены!
+          </div>
+        {% endif %}
       </form>
     </div>
 
     <div class="card-footer text-center">
-      <a href="{% url 'courses:lesson_detail' lesson.course.pk lesson.module.pk lesson.pk %}" 
-      class="btn btn-outline-light rounded-pill">
-        ← Вернуться к уроку
-      </a>
+      {% if user.is_superuser %}
+        <ul class="nav flex-column align-items-center mt-5">
+          <li class="nav-item my-2">
+            <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}"
+              class="btn btn-outline-success rounded-pill w-100">
+              ← Вернуться к уроку
+            </a>
+          </li>
+          <li class="nav-item my-2">
+            <a href="{% url 'quizzes:add_questions' quiz.pk %}"
+              class="btn btn-outline-primary rounded-pill w-100">
+              ✏️ Добавить вопросы
+            </a>
+          </li>
+        </ul>
+      {% endif %}
     </div>
   </div>
 </div>

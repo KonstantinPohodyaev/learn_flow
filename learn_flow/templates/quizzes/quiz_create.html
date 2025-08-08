@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  Создание теста для урока "{{ lesson.title }}"
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card bg-dark text-light rounded-4 shadow-sm mx-auto" style="max-width: 700px;">
+    <div class="card-header fs-4 text-center rounded-top">
+      ✏️ Создание теста
+    </div>
+    <div class="card-body p-4">
+      <p class="mb-4 text-center">
+        Вы создаёте тест для урока 
+        <span class="text-info fw-bold">{{ lesson.title }}</span>, 
+        входящего в модуль <span class="text-warning">{{ lesson.module.title }}</span>.
+      </p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% bootstrap_form form layout='vertical' %}
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-success rounded-pill py-2">
+            💾 Создать тест
+          </button>
+          <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}"
+             class="btn btn-outline-secondary rounded-pill py-2">
+            ⬅ Назад к уроку
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

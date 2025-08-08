@@ -30,9 +30,6 @@ class CourseDetailView(DetailView):
     context_object_name = 'course'
     pk_url_kwarg = 'course_id'
 
-    def get_object(self, *args, **kwargs):
-        return self.model.objects.get(pk=self.kwargs['course_id'])
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['modules'] = self.get_object().modules.all()
@@ -52,13 +49,15 @@ class ModuleCreateView(CreateView):
     form_class = ModuleForm
 
     def form_valid(self, form):
-        form.instance.course = Course.objects.get(pk=self.kwargs['course_id'])
+        form.instance.course = Course.objects.get(
+            pk=self.kwargs[self.pk_url_kwarg]
+        )
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(
             'courses:course_detail',
-            args=[self.kwargs['course_id']]
+            args=[self.kwargs[self.pk_url_kwarg]]
         )
 
 
@@ -73,6 +72,12 @@ class ModuleDetailView(DetailView):
         context['lessons'] = self.get_object().lessons.all()
         return context
 
+    def get_object(self):
+        return get_object_or_404(
+            self.model.objects.select_related('course').all(),
+            pk=self.kwargs[self.pk_url_kwarg]
+        )
+
 
 class ModuleDeleteView(DeleteView):
     model = Module
@@ -81,7 +86,8 @@ class ModuleDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy(
-            'courses:course_detail', args=[self.get_object().course.pk]
+            'courses:course_detail',
+            args=[self.get_object().course.pk]
         )
 
 

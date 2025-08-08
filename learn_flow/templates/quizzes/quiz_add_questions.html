@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+Добавить вопросы к тесту
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card bg-dark text-light shadow rounded-4">
+    <div class="card-header bg-info text-center fs-3 rounded-top">
+      ➕ Добавить вопросы к тесту: {{ quiz.title }}
+    </div>
+    <div class="card-body p-4">
+      <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        
+        {% for form in formset %}
+          <div class="mb-4 p-3 bg-secondary rounded">
+            {{ form.text.label_tag }}
+            {{ form.text }}
+            {% if form.errors %}
+              <div class="text-danger small">{{ form.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-outline-success rounded-pill">
+            ✅ Сохранить вопросы
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
