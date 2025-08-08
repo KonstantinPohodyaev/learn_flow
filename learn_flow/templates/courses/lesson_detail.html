@@ -31,9 +31,28 @@
         {% endif %}
       </div>
       <div class="card-footer text-center bg-secondary bg-opacity-25 py-3">
-        <a href="#" class="btn btn-outline-success btn-lg rounded-pill px-5">
-          Пройти тест
-        </a>
+          <ul class="nav justify-content-center p-3 rounded shadow-sm">
+            {% if user.is_superuser %}
+              <li class="nav-item mx-2">
+                <a href="" 
+                  class="btn btn-outline-primary rounded-pill p-3">
+                  ✏️ Редактировать урок
+                </a>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="{% url 'courses:lesson_delete' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
+                  class="btn btn-outline-danger rounded-pill p-3">
+                  🗑️ Удалить урок
+                </a>
+              </li>
+            {% endif %}
+            <li class="nav-item mx-2">
+              <a href="{% url 'quizzes:quiz_passing' lesson.pk %}"
+              class="btn btn-outline-success rounded-pill p-3">
+                Пройти тест
+              </a>
+            </li>
+          </ul>
       </div>
     </div>
   </div>

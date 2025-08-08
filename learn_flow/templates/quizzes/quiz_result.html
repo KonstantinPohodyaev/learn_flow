@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Результаты теста
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card bg-dark text-light shadow-lg rounded-4 border-info">
+    <div class="card-header text-center fs-2 text-light bg-info rounded-top">
+      ✅ Результаты теста
+    </div>
+
+    <div class="card-body p-5">
+      <p class="fs-4 text-info mb-4">
+        Проходной балл: <strong>{{ quiz.passing_score }}%</strong>
+      </p>
+
+      <p class="fs-4 mb-4 {% if score >= quiz.passing_score %}text-success{% else %}text-danger{% endif %}">
+        Ваш результат: <strong>{{ score }}%</strong>
+      </p>
+
+      {% if score >= quiz.passing_score %}
+        <div class="alert alert-success fs-5 rounded-pill text-center">
+          🎉 Поздравляем! Вы успешно прошли тест.
+        </div>
+      {% else %}
+        <div class="alert alert-danger fs-5 rounded-pill text-center">
+          ❌ К сожалению, вы не прошли тест. Попробуйте ещё раз.
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'courses:lesson_detail' lesson.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-light rounded-pill">
+        ← Назад к уроку
+      </a>
+      <a href="{% url 'courses:quiz_start' lesson.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-info rounded-pill">
+        🔁 Пройти снова
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

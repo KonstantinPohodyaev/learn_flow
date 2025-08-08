@@ -1,9 +1,9 @@
 from django.views.generic import ListView, CreateView, DetailView, DeleteView
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
 
 from courses.models import Course, Module, Lesson
 from courses.forms import CourseForm, ModuleForm, LessonForm
-from quizzes.models import Quiz
 
 
 class CoursesListView(ListView):
@@ -116,3 +116,21 @@ class LessonDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['quiz'] = getattr(self.get_object(), 'quiz', None)
         return context
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model.objects.select_related('module__course'),
+            pk=self.kwargs[self.pk_url_kwarg]
+        )
+
+
+class LessonDeleteView(DeleteView):
+    model = Lesson
+    template_name = 'courses/lesson_delete.html'
+    pk_url_kwarg = 'lesson_id'
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'courses:module_detail',
+            args=[self.kwargs['course_id'], self.kwargs['module_id']]
+        )

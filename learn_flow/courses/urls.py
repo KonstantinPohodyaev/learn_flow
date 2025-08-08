@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     CoursesListView, CourseCreateView, CourseDetailView, CourseDeleteView,
     ModuleCreateView, ModuleDetailView, ModuleDeleteView, 
-    LessonCreateView, LessonDetailView
+    LessonCreateView, LessonDetailView, LessonDeleteView
 )
 
 app_name = 'courses'
@@ -36,9 +36,14 @@ urlpatterns = [
         name='lesson_create'
     ),
     path(
-        'course/<int:course_id>/module/<int:module_id>/lesson/<int:lesson_id>/',
+        'lesson-detail/course/<int:course_id>/module/<int:module_id>/lesson/<int:lesson_id>/',
         LessonDetailView.as_view(),
         name='lesson_detail'
+    ),
+    path(
+        'lesson-delete/course/<int:course_id>/module/<int:module_id>/lesson/<int:lesson_id>/',
+        LessonDeleteView.as_view(),
+        name='lesson_delete'
     ),
     path(
         'course-delete/<int:course_id>/',

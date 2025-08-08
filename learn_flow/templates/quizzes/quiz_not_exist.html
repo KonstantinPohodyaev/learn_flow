@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Тест пока не доступен
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card bg-dark text-light p-4 rounded shadow-sm mx-auto" style="max-width: 600px;">
+    <h2 class="mb-4 text-center text-info">🚧 Тест в процессе подготовки</h2>
+    <p class="fs-5 text-center">
+      Спасибо за интерес к уроку <strong>"{{ lesson.title }}"</strong>!<br>
+      Мы скоро добавим тест — а пока вы можете продолжить изучение материала или вернуться к модулю.
+    </p>
+    <div class="d-flex flex-column align-items-center gap-3 mt-4">
+      <a class="btn btn-outline-info rounded-pill w-75"
+         href="{% url 'courses:module_detail' lesson.module.course.pk lesson.module.pk %}">
+        ⬅️ Назад к модулю
+      </a>
+      {% if user.is_superuser %}
+        <a class="btn btn-outline-warning rounded-pill w-75"
+           href="">
+          ➕ Добавить тест к уроку
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

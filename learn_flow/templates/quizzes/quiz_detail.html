@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Прохождение теста
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card bg-dark text-light shadow-lg rounded-4 border-info">
+    <div class="card-header text-center fs-2 text-light bg-info rounded-top">
+      📝 Тест: {{ quiz.title }}
+    </div>
+
+    <div class="card-body p-5">
+      <form method="post">
+        {% csrf_token %}
+
+        {% for field in form %}
+          <div class="mb-5">
+            <label class="form-label fs-5 text-info">{{ field.label }}</label>
+            <div class="ms-3">
+              {% for radio in field %}
+                <div class="form-check">
+                  {{ radio.tag }}
+                  <label class="form-check-label text-light">{{ radio.choice_label }}</label>
+                </div>
+              {% endfor %}
+            </div>
+            {% if field.errors %}
+              <div class="text-danger small mt-2">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-outline-success rounded-pill px-4 py-2">
+            ✅ Отправить ответы
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-footer text-center">
+      <a href="{% url 'courses:lesson_detail' lesson.course.pk lesson.module.pk lesson.pk %}" 
+      class="btn btn-outline-light rounded-pill">
+        ← Вернуться к уроку
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

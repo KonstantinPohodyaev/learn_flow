@@ -13,7 +13,10 @@
     <form method="post" class="text-center mt-4">
       {% csrf_token %}
       <button type="submit" class="btn btn-danger btn-lg rounded-pill px-4 me-3">Удалить</button>
-      <a href="{% url 'courses:course_detail' object.pk %}" class="btn btn-secondary btn-lg rounded-pill px-4">Отмена</a>
+      <a href="{% url 'courses:course_detail' object.course.pk %}"
+       class="btn btn-secondary btn-lg rounded-pill px-4">
+        Отмена
+      </a>
     </form>
   </div>
 </div>
