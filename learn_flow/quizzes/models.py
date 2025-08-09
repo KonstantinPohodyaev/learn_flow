@@ -32,6 +32,13 @@ USER_ANSWER_ANSWER_VERBOSE_NAME = 'Вариант ответа'
 USER_ANSWER_VERBOSE_NAME = 'Ответ пользователя'
 USER_ANSWER_VERBOSE_NAME_PLURAL = 'Ответы пользователей'
 
+USER_QUIZ_RESULT_USER_VERBOSE_NAME = 'Пользователь'
+USER_QUIZ_RESULT_QUIZ_VERBOSE_NAME = 'Тест'
+USER_QUIZ_RESULT_RESULT_VERBOSE_NAME = 'Результат теста'
+USER_QUIZ_RESULT_RESULT_HELP_TEXT = 'Укажите результат теста'
+USER_QUIZ_RESULT_VERBOSE_NAME = 'Результаты пользователя'
+USER_QUIZ_RESULT_VERBOSE_NAME_PLURAL = 'Результаты пользователей'
+
 
 class Quiz(models.Model):
     """Модель теста/квиза, привязанного к уроку.
@@ -161,3 +168,37 @@ class UserAnswer(models.Model):
 
     def __str__(self):
         return f'{self.user.email}: {self.answer.text[:30]}...'
+
+
+class UserQuizResult(models.Model):
+    """Модель результата прохождения пользователем теста.
+    
+    Attributes:
+        user (CustomUser): Пользователь, давший ответ
+        quiz (Quiz): Тест
+        result (int): баллы за тест
+    """
+
+    user = models.OneToOneField(
+        'users.User',
+        on_delete=models.CASCADE,
+        verbose_name=USER_QUIZ_RESULT_USER_VERBOSE_NAME
+    )
+    quiz = models.OneToOneField(
+        Quiz,
+        on_delete=models.CASCADE,
+        verbose_name=USER_QUIZ_RESULT_QUIZ_VERBOSE_NAME
+    )
+    result = models.PositiveIntegerField(
+        USER_QUIZ_RESULT_RESULT_VERBOSE_NAME,
+        help_text=USER_QUIZ_RESULT_RESULT_HELP_TEXT
+    )
+
+    class Meta:
+        verbose_name = USER_QUIZ_RESULT_VERBOSE_NAME
+        verbose_name_plural = USER_QUIZ_RESULT_VERBOSE_NAME_PLURAL
+        default_related_name = 'user_quiz_result'
+        ordering = ['user__email', 'quiz__title']
+
+    def __str__(self):
+        return f'{self.user.email} - {self.result}'
