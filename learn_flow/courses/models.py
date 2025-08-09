@@ -163,17 +163,6 @@ class Lesson(models.Model):
     def __str__(self):
         return f'{self.title}: {self.content[:30]}...'
 
-    def get_absolute_url(self):
-        lesson = L
-        return reverse(
-            'courses:lesson_detail',
-            args=[
-                self.module.course.pk,
-                self.module.pk,
-                self.pk
-            ]
-        )
-
 
 class CourseProgress(models.Model):
     """Модель для отслеживания прогресса пользователя по курсу.

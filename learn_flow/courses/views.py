@@ -6,31 +6,31 @@ from django.shortcuts import get_object_or_404
 
 from courses.models import Course, Module, Lesson
 from courses.forms import CourseForm, ModuleForm, LessonForm
+from courses.mixins import (
+    CourseModelMixin, CourseFormTemplateObjectNameMixin,
+    CourseSuccessUrlMixin, ModuleModelMixin,
+    ModuleFormTemplateObjectNameMixin, LessonModelMixin,
+    LessonFormTemplateObjectNameMixin
+)
 
 
-class CoursesListView(ListView):
-    model = Course
+class CoursesListView(CourseModelMixin, ListView):
     template_name = 'courses/course_list.html'
     context_object_name = 'courses'
-    queryset = model.objects.filter(is_published=True)
+    queryset = CourseModelMixin.model.objects.filter(is_published=True)
 
 
-class CourseCreateView(CreateView):
-    model = Course
-    form_class = CourseForm
-    template_name = 'courses/course_create.html'
-    success_url = reverse_lazy('courses:courses_list')
-
+class CourseCreateView(
+    CourseFormTemplateObjectNameMixin,
+    CourseSuccessUrlMixin, CreateView
+):
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
 
 
-class CourseDetailView(DetailView):
-    model = Course
+class CourseDetailView(CourseModelMixin, DetailView):
     template_name = 'courses/course_detail.html'
-    context_object_name = 'course'
-    pk_url_kwarg = 'course_id'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -38,31 +38,20 @@ class CourseDetailView(DetailView):
         return context
 
 
-class CourseDeleteView(DeleteView):
-    model = Course
+class CourseDeleteView(CourseModelMixin, CourseSuccessUrlMixin, DeleteView):
     template_name = 'courses/course_delete.html'
-    pk_url_kwarg = 'course_id'
-    success_url = reverse_lazy('courses:course_list')
 
 
-class CourseUpdateView(UpdateView):
-    model = Course
-    template_name = 'courses/course_create.html'
-    pk_url_kwarg = 'course_id'
-    context_object_name = 'course'
-    form_class = CourseForm
-
+class CourseUpdateView(
+    CourseFormTemplateObjectNameMixin, UpdateView
+):
     def get_success_url(self):
         return reverse_lazy(
             'courses:course_detail', args=[self.kwargs[self.pk_url_kwarg]]
         )
 
 
-class ModuleCreateView(CreateView):
-    model = Module
-    template_name = 'courses/module_create.html'
-    form_class = ModuleForm
-
+class ModuleCreateView(ModuleFormTemplateObjectNameMixin, CreateView):
     def form_valid(self, form):
         form.instance.course = Course.objects.get(
             pk=self.kwargs[self.pk_url_kwarg]
@@ -76,11 +65,8 @@ class ModuleCreateView(CreateView):
         )
 
 
-class ModuleDetailView(DetailView):
-    model = Module
+class ModuleDetailView(ModuleModelMixin, DetailView):
     template_name = 'courses/module_detail.html'
-    pk_url_kwarg = 'module_id'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,11 +80,7 @@ class ModuleDetailView(DetailView):
         )
 
 
-class ModuleDeleteView(DeleteView):
-    model = Module
-    template_name = 'courses/module_delete.html'
-    pk_url_kwarg = 'module_id'
-
+class ModuleDeleteView(ModuleModelMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy(
             'courses:course_detail',
@@ -106,12 +88,7 @@ class ModuleDeleteView(DeleteView):
         )
 
 
-class ModuleUpdateView(UpdateView):
-    model = Module
-    template_name = 'courses/module_create.html'
-    pk_url_kwarg = 'module_id'
-    form_class = ModuleForm
-
+class ModuleUpdateView(ModuleFormTemplateObjectNameMixin, UpdateView):
     def get_object(self):
         return self.model.objects.select_related('course').get(
             pk=self.kwargs[self.pk_url_kwarg]
@@ -124,11 +101,7 @@ class ModuleUpdateView(UpdateView):
         )
 
 
-class LessonCreateView(CreateView):
-    model = Lesson
-    template_name = 'courses/lesson_create.html'
-    form_class = LessonForm
-
+class LessonCreateView(LessonFormTemplateObjectNameMixin, CreateView):
     def form_valid(self, form):
         form.instance.course = Course.objects.get(pk=self.kwargs['course_id'])
         form.instance.module = Module.objects.get(pk=self.kwargs['module_id'])
@@ -146,10 +119,8 @@ class LessonCreateView(CreateView):
         )
 
 
-class LessonDetailView(DetailView):
-    model = Lesson
+class LessonDetailView(LessonModelMixin, DetailView):
     template_name = 'courses/lesson_detail.html'
-    pk_url_kwarg = 'lesson_id'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -163,10 +134,8 @@ class LessonDetailView(DetailView):
         )
 
 
-class LessonDeleteView(DeleteView):
-    model = Lesson
+class LessonDeleteView(LessonModelMixin, DeleteView):
     template_name = 'courses/lesson_delete.html'
-    pk_url_kwarg = 'lesson_id'
 
     def get_success_url(self):
         return reverse_lazy(
@@ -175,12 +144,7 @@ class LessonDeleteView(DeleteView):
         )
 
 
-class LessonUpdateView(UpdateView):
-    model = Lesson
-    template_name = 'courses/lesson_create.html'
-    pk_url_kwarg = 'lesson_id'
-    form_class = LessonForm
-
+class LessonUpdateView(LessonFormTemplateObjectNameMixin, UpdateView):
     def get_success_url(self):
         lesson = self.get_object()
         return reverse_lazy(
