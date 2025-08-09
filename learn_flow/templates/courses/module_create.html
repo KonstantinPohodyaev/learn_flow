@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 
 {% block title %}
-  Создание модуля
+  {% if lesson %}Редактирование урока{% else %}Создание урока{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -11,14 +11,19 @@
       <div class="col-md-8">
         <div class="card border-secondary bg-dark text-light shadow">
           <div class="card-header border-bottom border-secondary">
-            <h4 class="mb-0">Добавить модуль к курсу</h4>
+            <h4 class="mb-0">
+              {% if lesson %}Редактировать урок{% else %}Добавить урок{% endif %}
+              {% if module %}к модулю "{{ module.title }}"{% endif %}
+            </h4>
           </div>
           <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
               {% csrf_token %}
               {% bootstrap_form form layout='vertical' %}
               <div class="d-flex justify-content-end mt-3">
-                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <button type="submit" class="btn btn-primary">
+                  {% if lesson %}Сохранить{% else %}Создать{% endif %}
+                </button>
               </div>
             </form>
           </div>

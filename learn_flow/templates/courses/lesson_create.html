@@ -2,7 +2,7 @@
 {% load django_bootstrap5 %}
 
 {% block title %}
-  Создание урока
+  Редактирование урока
 {% endblock %}
 
 {% block content %}
@@ -11,7 +11,7 @@
       <div class="col-md-8">
         <div class="card border-secondary bg-dark text-light shadow">
           <div class="card-header border-bottom border-secondary">
-            <h4 class="mb-0">Добавление урока к модулю {{ module.title }}</h4>
+            <h4 class="mb-0">Редактирование урока {{ lesson.title }}</h4>
           </div>
           <div class="card-body">
             <form method="post" enctype="multipart/form-data">

@@ -1,4 +1,6 @@
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
+from django.views.generic import (
+    ListView, CreateView, DetailView, DeleteView, UpdateView
+)
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 
@@ -41,6 +43,19 @@ class CourseDeleteView(DeleteView):
     template_name = 'courses/course_delete.html'
     pk_url_kwarg = 'course_id'
     success_url = reverse_lazy('courses:course_list')
+
+
+class CourseUpdateView(UpdateView):
+    model = Course
+    template_name = 'courses/course_create.html'
+    pk_url_kwarg = 'course_id'
+    context_object_name = 'course'
+    form_class = CourseForm
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'courses:course_detail', args=[self.kwargs[self.pk_url_kwarg]]
+        )
 
 
 class ModuleCreateView(CreateView):
@@ -88,6 +103,24 @@ class ModuleDeleteView(DeleteView):
         return reverse_lazy(
             'courses:course_detail',
             args=[self.get_object().course.pk]
+        )
+
+
+class ModuleUpdateView(UpdateView):
+    model = Module
+    template_name = 'courses/module_create.html'
+    pk_url_kwarg = 'module_id'
+    form_class = ModuleForm
+
+    def get_object(self):
+        return self.model.objects.select_related('course').get(
+            pk=self.kwargs[self.pk_url_kwarg]
+        )
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'courses:module_detail',
+            args=[self.get_object().course.pk, self.kwargs[self.pk_url_kwarg]]
         )
 
 
@@ -139,4 +172,28 @@ class LessonDeleteView(DeleteView):
         return reverse_lazy(
             'courses:module_detail',
             args=[self.kwargs['course_id'], self.kwargs['module_id']]
+        )
+
+
+class LessonUpdateView(UpdateView):
+    model = Lesson
+    template_name = 'courses/lesson_create.html'
+    pk_url_kwarg = 'lesson_id'
+    form_class = LessonForm
+
+    def get_success_url(self):
+        lesson = self.get_object()
+        return reverse_lazy(
+            'courses:lesson_detail',
+            args=[
+                lesson.module.course.pk,
+                lesson.module.pk,
+                lesson.pk
+            ]
+        )
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model.objects.select_related('module__course'),
+            pk=self.kwargs[self.pk_url_kwarg]
         )

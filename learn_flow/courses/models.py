@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 COURSE_TITLE_VERBOSE_NAME = 'Название курса'
@@ -7,7 +8,7 @@ COURSE_TITLE_HELP_TEXT = 'Введите название курса'
 COURSE_DESCRIPTION_VERBOSE_NAME = 'Описание курса'
 COURSE_DESCRIPTION_HELP_TEXT = 'Укажите описание курса'
 COURSE_OWNER_VERBOSE_NAME = 'Создатель курса'
-COURSE_IS_PUBLISHED_VERBOSE_NAME = 'Статус курса'
+COURSE_IS_PUBLISHED_VERBOSE_NAME = 'Для публикации'
 COURSE_IS_PUBLISHED_HELP_TEXT = 'Укажите статус курса'
 COURSE_VERBOSE_NAME = 'Курс'
 COURSE_VERBOSE_NAME_PLURAL = 'Курсы'
@@ -161,6 +162,17 @@ class Lesson(models.Model):
 
     def __str__(self):
         return f'{self.title}: {self.content[:30]}...'
+
+    def get_absolute_url(self):
+        lesson = L
+        return reverse(
+            'courses:lesson_detail',
+            args=[
+                self.module.course.pk,
+                self.module.pk,
+                self.pk
+            ]
+        )
 
 
 class CourseProgress(models.Model):

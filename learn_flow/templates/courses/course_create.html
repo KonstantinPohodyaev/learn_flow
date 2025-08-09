@@ -2,19 +2,26 @@
 {% load django_bootstrap5 %}
 
 {% block title %}
-  Создание курса
+  {% if course %}Редактирование курса{% else %}Создание курса{% endif %}
 {% endblock %}
 
 {% block content %}
-  <h2 class="mb-4"></h2>
-  <div class="card m-5">
-    <div class="card-header">Создание курса</div>
-    <div class="card-body">
-      <form method="post" enctype="multipart/form-data">
+<div class="container mt-5">
+  <div class="card bg-dark text-light rounded-4 shadow-lg border-info mx-auto" style="max-width: 700px;">
+    <div class="card-header bg-info text-center fs-3 fw-bold rounded-top">
+      {% if course %}Редактирование курса{% else %}Создание курса{% endif %}
+    </div>
+    <div class="card-body p-5">
+      <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {% bootstrap_form form %}
-        {% bootstrap_button button_type="submit" content="Создать" %}
+        <div class="d-flex justify-content-center mt-4">
+          <button type="submit" class="btn btn-success rounded-pill px-5 shadow-sm">
+            {% if course %}Сохранить{% else %}Создать{% endif %}
+          </button>
+        </div>
       </form>
     </div>
   </div>
+</div>
 {% endblock %}

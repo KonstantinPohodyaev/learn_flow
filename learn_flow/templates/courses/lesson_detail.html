@@ -34,7 +34,7 @@
         <ul class="nav justify-content-center p-3 rounded shadow-sm">
           {% if user.is_superuser %}
             <li class="nav-item mx-2">
-              <a href="" 
+              <a href="{% url 'courses:lesson_update' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
                 class="btn btn-outline-primary rounded-pill p-3">
                 ✏️ Редактировать урок
               </a>
