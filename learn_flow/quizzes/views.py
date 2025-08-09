@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from courses.models import Lesson
-from quizzes.models import UserAnswer, Quiz, Question
+from quizzes.models import UserAnswer, Quiz, Question, UserQuizResult
 from quizzes.forms import (
     QuizForm, QuizFormCreate, QuestionFormSet, QuestionForm,
     AnswerFormSet
@@ -11,7 +11,7 @@ from quizzes.forms import (
 def showing_and_passing_quiz(request, lesson_id):
     current_lesson = get_object_or_404(
         Lesson.objects
-        .select_related('module__course', 'quiz')
+        .select_related('module__course')
         .prefetch_related('quiz__questions__answers'), pk=lesson_id
     )
     try:
@@ -39,24 +39,42 @@ def showing_and_passing_quiz(request, lesson_id):
             if question.answers.filter(pk=answer_pk, is_correct=True).exists():
                 true_answers_count += 1
         score = round((true_answers_count / questions.count()) * 100, 0)
-        quiz_status = score >= quiz.passing_score
+        previos_user_result = UserQuizResult.objects.filter(
+            user=request.user, quiz=quiz
+        ).first()
+        new_success_status = score >= quiz.passing_score
+        if previos_user_result:
+            previos_user_result.score = score
+            previos_user_result.success_status = new_success_status
+            previos_user_result.save()
+        else:
+            UserQuizResult.objects.create(
+                user=request.user,
+                quiz=quiz,
+                success_status=new_success_status,
+                score=score
+            )
         return render(
             request,
             'quizzes/quiz_result.html',
             context=dict(
                 lesson=current_lesson,
-                quiz_status=quiz_status,
+                quiz_status=new_success_status,
                 score=score,
                 quiz=quiz
             )
         )
+    previos_user_quiz_result = request.user.user_quiz_results.filter(
+        quiz=quiz
+    ).first()
     return render(
         request,
         'quizzes/quiz_detail.html',
         context=dict(
             quiz=quiz,
             lesson=current_lesson,
-            form=form
+            form=form,
+            previos_user_quiz_result=previos_user_quiz_result
         )
     )
 
@@ -125,7 +143,6 @@ def add_questions(request, quiz_id):
         ]
 
     question_answer_formsets = list(zip(question_formset.forms, answer_formsets))
-
     return render(
         request,
         'quizzes/quiz_add_questions.html',

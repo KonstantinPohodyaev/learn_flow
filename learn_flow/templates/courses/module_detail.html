@@ -11,9 +11,16 @@
         🎓 Уроки модуля: {{ module.title }}
       </div>
       <ul class="row g-4">
-        {% for lesson in module.lessons.all %}
+        {% for lesson, user_quiz_result in lessons_and_user_quiz_results %}
           <div class="col-md-6 col-lg-4">
-            <div class="card bg-secondary text-light border-0 shadow-sm h-100 hover-shadow">
+            <div class="card 
+              {% if user_quiz_result.success_status == True %}
+                bg-good
+              {% elif user_quiz_result.success_status == False %}
+                bg-bad
+              {% else %}
+                bg-secondary
+              {% endif %} text-light border-0 shadow-sm h-100 hover-shadow">
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title text-info">{{ lesson.title }}</h5>
                 <p class="card-text text-light">{{ lesson.content|truncatewords:20 }}</p>

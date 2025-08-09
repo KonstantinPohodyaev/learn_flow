@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 
 from courses.models import Course, Module, Lesson
+from quizzes.models import UserQuizResult
 from courses.forms import CourseForm, ModuleForm, LessonForm
 from courses.mixins import (
     CourseModelMixin, CourseFormTemplateObjectNameMixin,
@@ -70,12 +71,26 @@ class ModuleDetailView(ModuleModelMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['lessons'] = self.get_object().lessons.all()
+        lessons = self.get_object().lessons.all()
+        lessons_and_user_quiz_results = []
+        for lesson in lessons:
+            try:
+                quiz = lesson.quiz
+                user_quiz_result = UserQuizResult.objects.filter(
+                    quiz=quiz,
+                    user=self.request.user
+                ).first()
+            except Lesson.quiz.RelatedObjectDoesNotExist:
+                user_quiz_result = None
+            lessons_and_user_quiz_results.append(
+                (lesson, user_quiz_result)
+            )
+        context['lessons_and_user_quiz_results'] = lessons_and_user_quiz_results
         return context
 
     def get_object(self):
         return get_object_or_404(
-            self.model.objects.select_related('course').all(),
+            self.model.objects.select_related('course').prefetch_related('lessons').all(),
             pk=self.kwargs[self.pk_url_kwarg]
         )
 

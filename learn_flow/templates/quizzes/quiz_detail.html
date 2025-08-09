@@ -11,7 +11,14 @@
     <div class="card-header text-center fs-3 fw-bold text-light bg-info rounded-top d-flex justify-content-center align-items-center gap-2">
       <span class="fs-2">📝</span> Прохождение теста: <span class="ms-2">{{ quiz.title }}</span>
     </div>
-
+    {% if previos_user_quiz_result %}
+      <div class="card-title m-3 text-center fs-4
+        {% if previos_user_quiz_result.success_status %}text-success{% else %}text-danger{% endif %}">
+        Прошлый результат: {{ previos_user_quiz_result.score }}% 
+        {% if previos_user_quiz_result.success_status %}✅{% else %}❌{% endif %}
+      </div>
+      <hr>
+    {% endif %}
     <div class="card-body p-4 p-md-5">
       <form method="post" novalidate>
         {% csrf_token %}

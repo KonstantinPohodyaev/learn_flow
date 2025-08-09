@@ -36,6 +36,8 @@ USER_QUIZ_RESULT_USER_VERBOSE_NAME = 'Пользователь'
 USER_QUIZ_RESULT_QUIZ_VERBOSE_NAME = 'Тест'
 USER_QUIZ_RESULT_RESULT_VERBOSE_NAME = 'Результат теста'
 USER_QUIZ_RESULT_RESULT_HELP_TEXT = 'Укажите результат теста'
+USER_QUIZ_RESULT_SUCCESS_STATUS_VERBOSE_NAME = 'Статус прохождения теста'
+USER_QUIZ_RESULT_SUCCESS_STATUS_HELP_TEXT = 'Укажите статус прохождения теста'
 USER_QUIZ_RESULT_VERBOSE_NAME = 'Результаты пользователя'
 USER_QUIZ_RESULT_VERBOSE_NAME_PLURAL = 'Результаты пользователей'
 
@@ -179,26 +181,37 @@ class UserQuizResult(models.Model):
         result (int): баллы за тест
     """
 
-    user = models.OneToOneField(
-        'users.User',
+    user = models.ForeignKey(
+        'users.CustomUser',
         on_delete=models.CASCADE,
         verbose_name=USER_QUIZ_RESULT_USER_VERBOSE_NAME
     )
-    quiz = models.OneToOneField(
+    quiz = models.ForeignKey(
         Quiz,
         on_delete=models.CASCADE,
         verbose_name=USER_QUIZ_RESULT_QUIZ_VERBOSE_NAME
     )
-    result = models.PositiveIntegerField(
+    score = models.PositiveIntegerField(
         USER_QUIZ_RESULT_RESULT_VERBOSE_NAME,
         help_text=USER_QUIZ_RESULT_RESULT_HELP_TEXT
+    )
+    success_status = models.BooleanField(
+        USER_QUIZ_RESULT_SUCCESS_STATUS_VERBOSE_NAME,
+        default=True,
+        help_text=USER_QUIZ_RESULT_SUCCESS_STATUS_HELP_TEXT
     )
 
     class Meta:
         verbose_name = USER_QUIZ_RESULT_VERBOSE_NAME
         verbose_name_plural = USER_QUIZ_RESULT_VERBOSE_NAME_PLURAL
-        default_related_name = 'user_quiz_result'
+        default_related_name = 'user_quiz_results'
         ordering = ['user__email', 'quiz__title']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'quiz'],
+                name='%(app_label)s_%(class)s_user_quiz_unique_together'
+            )
+        ]
 
     def __str__(self):
         return f'{self.user.email} - {self.result}'
