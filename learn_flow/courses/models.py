@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 
 COURSE_TITLE_VERBOSE_NAME = 'Название курса'

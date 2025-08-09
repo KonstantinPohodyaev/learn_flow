@@ -1,27 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar shadow-lg">
   <div class="container">
-    <a class="navbar-brand text-info fw-bold" href="{% url 'courses:course_list' %}">
+    <a class="navbar-brand fw-bold gradient-text" href="{% url 'courses:course_list' %}">
       🎓 Курсы
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    
+
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item mx-2">
-          <a class="nav-link text-light" href="{% url 'courses:course_list' %}">🏠 Главная</a>
+          <a class="nav-link custom-link" href="{% url 'courses:course_list' %}">🏠 Главная</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link text-light" href="#">ℹ️ О нас</a>
+          <a class="nav-link custom-link" href="#">ℹ️ О нас</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link text-light" href="#">📞 Контакты</a>
+          <a class="nav-link custom-link" href="#">📞 Контакты</a>
         </li>
 
         {% if user.is_superuser %}
           <li class="nav-item mx-2">
-            <a class="btn btn-sm btn-outline-info rounded-pill px-3" href="{% url 'admin:index' %}">
+            <a class="btn btn-sm btn-outline-info rounded-pill px-3 custom-btn-outline" href="{% url 'admin:index' %}">
               ⚙️ Админка
             </a>
           </li>
@@ -30,3 +31,56 @@
     </div>
   </div>
 </nav>
+
+<style>
+  .custom-navbar {
+    background: linear-gradient(90deg, #0d1b2a 0%, #1b263b 100%);
+    border-bottom: 3px solid #0ea5e9;
+  }
+
+  .gradient-text {
+    background: linear-gradient(45deg, #0ea5e9, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0.5s ease;
+    background-size: 200% 200%;
+  }
+  .gradient-text:hover {
+    background-position: 100% 0;
+  }
+
+  .custom-link {
+    color: #a0aec0;
+    transition: color 0.3s ease;
+    font-weight: 500;
+    position: relative;
+  }
+  .custom-link::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    background: #0ea5e9;
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 2px;
+  }
+  .custom-link:hover {
+    color: #22d3ee;
+  }
+  .custom-link:hover::after {
+    width: 100%;
+  }
+
+  .custom-btn-outline {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .custom-btn-outline:hover {
+    background-color: #0ea5e9;
+    color: #0f172a;
+  }
+</style>

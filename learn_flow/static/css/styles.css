@@ -1,6 +1,63 @@
+.main-bg {
+  background: linear-gradient(135deg, #66a9ed 0%, #ffffff 100%);
+  min-height: 100vh;
+}
+
 .bg-good {
-    background-color: #4a8d4e !important
+    background: linear-gradient(135deg, #3b8e52 0%, #809e73 100%) !important
 }
 .bg-bad {
-    background-color: #b97474 !important
+    background: linear-gradient(135deg, #944a4a 0%, #7a6161 100%) !important
+}
+
+/* Для 'include/header.html' */
+.custom-navbar {
+    background: linear-gradient(90deg, #0d1b2a 0%, #1b263b 100%);
+    border-bottom: 3px solid #0ea5e9;
+}
+
+.gradient-text {
+    background: linear-gradient(45deg, #0ea5e9, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0.5s ease;
+    background-size: 200% 200%;
+}
+.gradient-text:hover {
+    background-position: 100% 0;
+}
+
+.custom-link {
+    color: #a0aec0;
+    transition: color 0.3s ease;
+    font-weight: 500;
+    position: relative;
+}
+.custom-link::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0;
+    background: #0ea5e9;
+    transition: width 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 2px;
+}
+.custom-link:hover {
+    color: #22d3ee;
+}
+.custom-link:hover::after {
+    width: 100%;
+}
+
+.custom-btn-outline {
+    border-color: #0ea5e9;
+    color: #0ea5e9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.custom-btn-outline:hover {
+    background-color: #0ea5e9;
+    color: #0f172a;
 }
