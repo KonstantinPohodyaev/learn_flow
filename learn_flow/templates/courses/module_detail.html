@@ -7,10 +7,10 @@
 {% block content %}
   <div class="container mt-5">
     <div class="card bg-dark text-light rounded-4 shadow-lg p-4">
-      <h2 class="text-center text-info mb-4 rounded px-3 py-2 shadow-sm">
-        Уроки модуля: {{ module.title }}
-      </h2>
-      <div class="row g-4">
+      <div class="card-header fs-3 text-center text-white border-bottom mb-5">
+        🎓 Уроки модуля: {{ module.title }}
+      </div>
+      <ul class="row g-4">
         {% for lesson in module.lessons.all %}
           <div class="col-md-6 col-lg-4">
             <div class="card bg-secondary text-light border-0 shadow-sm h-100 hover-shadow">
@@ -33,28 +33,34 @@
             </div>
           </div>
         {% endfor %}
-        {% if user.is_superuser %}
-          <ul class="nav justify-content-center mt-4 bg-dark p-3 rounded shadow-sm">
+        <ul class="nav justify-content-center mt-4 bg-dark p-3 rounded shadow-sm">
+          <li class="nav-item mx-2">
+            <a href="{% url 'courses:course_detail' module.course.pk %}" 
+              class="btn btn-outline-warning rounded-pill mx-2">
+              ← Назад к модулям
+            </a>
+          </li>
+          {% if user.is_superuser %}
             <li class="nav-item mx-2">
               <a href="{% url 'courses:lesson_create' module.course.pk module.pk %}" 
-                class="btn btn-outline-success btn-sm rounded-pill px-3">
+                class="btn btn-outline-success rounded-pill mx-2">
                 ➕ Добавить урок
               </a>
             </li>
             <li class="nav-item mx-2">
               <a href="" 
-                class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                class="btn btn-outline-primary rounded-pill mx-2">
                 ✏️ Редактировать модуль
               </a>
             </li>
             <li class="nav-item mx-2">
               <a href="{% url 'courses:module_delete' module.pk %}" 
-                class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                class="btn btn-outline-danger rounded-pill mx-2">
                 🗑️ Удалить модуль
               </a>
             </li>
-          </ul>
-        {% endif %}
+          {% endif %}
+        </ul>
       </div>
     </div>
   </div>

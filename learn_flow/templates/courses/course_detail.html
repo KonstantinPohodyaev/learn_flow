@@ -11,7 +11,6 @@
       <div class="card-header fs-3 text-center text-white border-bottom">
         🎓 {{ course.title }}
       </div>
-
       <div class="card-body">
         <p class="fs-5 text-center mb-4">
           <span class="text-secondary">Описание:</span>
@@ -44,28 +43,34 @@
                 <p class="text-info text-center">Модули пока не добавлены</p>
               {% endfor %}
             </div>
-            {% if user.is_superuser %}
-              <ul class="nav flex-column align-items-center mt-5">
-                <li class="nav-item my-1">
-                  <a href="{% url 'courses:module_create' course.pk %}"
-                    class="btn btn-outline-success btn-sm rounded-pill px-4 w-100">
-                    ➕ Добавить модуль
-                  </a>
-                </li>
-                <li class="nav-item my-1">
-                  <a href="#"
-                    class="btn btn-outline-primary btn-sm rounded-pill px-4 w-100">
-                    ✏️ Редактировать курс
-                  </a>
-                </li>
-                <li class="nav-item my-1">
-                  <a href="{% url 'courses:course_delete' course.pk %}"
-                    class="btn btn-outline-danger btn-sm rounded-pill px-4 w-100">
-                    🗑️ Удалить курс
-                  </a>
-                </li>
-              </ul>
-            {% endif %}
+            <ul class="nav justify-content-center mt-4 p-3 rounded shadow-sm">
+              <li class="nav-item mx-2">
+                <a href="{% url 'courses:course_list' %}"
+                  class="btn btn-outline-warning rounded-pill px-4 w-100">
+                  ← Назад к курсам
+                </a>
+              </li>
+              {% if user.is_superuser %}
+                  <li class="nav-item mx-2">
+                    <a href="{% url 'courses:module_create' course.pk %}"
+                      class="btn btn-outline-success rounded-pill px-4 w-100">
+                      ➕ Добавить модуль
+                    </a>
+                  </li>
+                  <li class="nav-item mx-2">
+                    <a href="#"
+                      class="btn btn-outline-primary rounded-pill px-4 w-100">
+                      ✏️ Редактировать курс
+                    </a>
+                  </li>
+                  <li class="nav-item mx-2">
+                    <a href="{% url 'courses:course_delete' course.pk %}"
+                      class="btn btn-outline-danger rounded-pill px-4 w-100">
+                      🗑️ Удалить курс
+                    </a>
+                  </li>
+              {% endif %}
+            </ul>
           </div>
         </div>
       </div>
