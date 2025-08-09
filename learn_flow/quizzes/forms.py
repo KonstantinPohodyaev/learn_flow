@@ -1,9 +1,12 @@
+import random
+
 from django import forms
 
-from quizzes.models import Quiz, Question
+from quizzes.models import Quiz, Question, Answer
 
 
 QUESTION_FORMSET_EXTRA = 3
+ANSWER_FORMSET_EXTRA = 4
 
 
 class QuizForm(forms.Form):
@@ -17,11 +20,18 @@ class QuizForm(forms.Form):
                 (answer.id, answer.text)
                 for answer in question.answers.all()
             ]
+            random.shuffle(choises)
             self.fields[f'question_{question.id}'] = forms.ChoiceField(
                 choices=choises,
                 widget=forms.RadioSelect,
                 label=question.text
             )
+
+
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model = Answer
+        fields = ['text', 'is_correct']
 
 
 class QuizFormCreate(forms.ModelForm):
@@ -48,5 +58,14 @@ QuestionFormSet = forms.modelformset_factory(
     Question,
     form=QuestionForm,
     extra=QUESTION_FORMSET_EXTRA,
+    can_delete=False
+)
+
+
+AnswerFormSet = forms.inlineformset_factory(
+    Question,
+    Answer,
+    form=AnswerForm,
+    extra=ANSWER_FORMSET_EXTRA,
     can_delete=False
 )

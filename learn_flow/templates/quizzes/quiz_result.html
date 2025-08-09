@@ -32,10 +32,10 @@
     </div>
 
     <div class="card-footer d-flex justify-content-between">
-      <a href="{% url 'courses:lesson_detail' lesson.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-light rounded-pill">
+      <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-light rounded-pill">
         ← Назад к уроку
       </a>
-      <a href="{% url 'courses:quiz_start' lesson.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-info rounded-pill">
+      <a href="{% url 'quizzes:quiz_passing' quiz.lesson.pk %}" class="btn btn-outline-info rounded-pill">
         🔁 Пройти снова
       </a>
     </div>

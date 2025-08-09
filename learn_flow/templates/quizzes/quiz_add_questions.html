@@ -1,36 +1,76 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block title %}
-Добавить вопросы к тесту
+  Добавление вопросов
 {% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-  <div class="card bg-dark text-light shadow rounded-4">
-    <div class="card-header bg-info text-center fs-3 rounded-top">
-      ➕ Добавить вопросы к тесту: {{ quiz.title }}
+  <div class="card bg-dark text-light shadow-lg rounded-4 border-info">
+    <div class="card-header text-center fs-2 text-light bg-info rounded-top">
+      ✏️ Добавление вопросов — {{ quiz.title }}
     </div>
-    <div class="card-body p-4">
+
+    <div class="card-body p-5">
       <form method="post">
         {% csrf_token %}
-        {{ formset.management_form }}
-        
-        {% for form in formset %}
-          <div class="mb-4 p-3 bg-secondary rounded">
-            {{ form.text.label_tag }}
-            {{ form.text }}
-            {% if form.errors %}
-              <div class="text-danger small">{{ form.errors }}</div>
-            {% endif %}
+        {{ question_formset.management_form }}
+
+        {% for q_form, answer_formset in question_answer_formsets %}
+          <div class="mb-5 border border-info rounded-3 p-4 bg-secondary shadow-sm">
+            <h5 class="text-info">Вопрос {{ forloop.counter }}</h5>
+            <div class="mb-3">
+              {{ q_form.text.label_tag }}
+              {{ q_form.text|add_class:"form-control bg-dark text-light" }}
+              {% if q_form.text.errors %}
+                <div class="text-danger small">{{ q_form.text.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              {{ q_form.explanation.label_tag }}
+              {{ q_form.explanation|add_class:"form-control bg-dark text-light" }}
+            </div>
+
+            <hr class="border-info">
+
+            {{ answer_formset.management_form }}
+            <h6 class="text-warning mb-3">Варианты ответов</h6>
+            {% for a_form in answer_formset %}
+              <div class="mb-3 p-3 border rounded bg-dark">
+                <div class="row g-3 align-items-center">
+                  <div class="col-md-9">
+                    {{ a_form.text.label_tag }}
+                    {{ a_form.text|add_class:"form-control bg-dark text-light" }}
+                  </div>
+                  <div class="col-md-3 text-center">
+                    {{ a_form.is_correct }}
+                    <label class="form-check-label text-success">Правильный?</label>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
           </div>
         {% endfor %}
 
+
         <div class="text-center mt-4">
-          <button type="submit" class="btn btn-outline-success rounded-pill">
-            ✅ Сохранить вопросы
+          <button type="submit" class="btn btn-outline-success rounded-pill px-5">
+            💾 Сохранить вопросы
           </button>
         </div>
       </form>
+    </div>
+
+    <div class="card-footer text-center">
+      <ul class="nav flex-column align-items-center mt-4">
+        <li class="nav-item my-2">
+          <a href="{% url 'quizzes:quiz_passing' quiz.lesson.pk %}"
+            class="btn btn-outline-success rounded-pill w-100">
+            ← Вернуться к тесту
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

@@ -2,7 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 
 from courses.models import Lesson
 from quizzes.models import UserAnswer, Quiz, Question
-from quizzes.forms import QuizForm, QuizFormCreate, QuestionFormSet
+from quizzes.forms import (
+    QuizForm, QuizFormCreate, QuestionFormSet, QuestionForm,
+    AnswerFormSet
+)
 
 
 def showing_and_passing_quiz(request, lesson_id):
@@ -24,7 +27,7 @@ def showing_and_passing_quiz(request, lesson_id):
     questions = quiz.questions.all()
     form = QuizForm(request.POST or None, questions=questions)
     if request.method == 'POST' and form.is_valid():
-        score = 0
+        true_answers_count = 0
         for question in questions:
             answer_pk = int(form.cleaned_data[f'question_{question.pk}'])
             answer = question.answers.get(pk=answer_pk)
@@ -34,7 +37,8 @@ def showing_and_passing_quiz(request, lesson_id):
                 answer=answer
             )
             if question.answers.filter(pk=answer_pk, is_correct=True).exists():
-                score += 1
+                true_answers_count += 1
+        score = round((true_answers_count / questions.count()) * 100, 0)
         quiz_status = score >= quiz.passing_score
         return render(
             request,
@@ -42,7 +46,8 @@ def showing_and_passing_quiz(request, lesson_id):
             context=dict(
                 lesson=current_lesson,
                 quiz_status=quiz_status,
-                score=score
+                score=score,
+                quiz=quiz
             )
         )
     return render(
@@ -87,23 +92,47 @@ def add_questions(request, quiz_id):
         pk=quiz_id
     )
     if request.method == 'POST':
-        formset = QuestionFormSet(
-            request.POST, queryset=Question.objects.none()
-        )
-        if formset.is_valid():
-            for form in formset:
-                if form.cleaned_data:
-                    question = form.save(commit=False)
+        question_formset = QuestionFormSet(request.POST, queryset=Question.objects.none())
+        if question_formset.is_valid():
+            questions = question_formset.save(commit=False)
+            valid = True
+            answer_formsets = []
+            for index, question in enumerate(questions):
+                question.quiz = quiz
+                answer_formset = AnswerFormSet(
+                    request.POST,
+                    instance=question,
+                    prefix=f'answers_{index}'
+                )
+                answer_formsets.append(answer_formset)
+                if not answer_formset.is_valid():
+                    valid = False
+            if valid:
+                for index, question in enumerate(questions):
                     question.quiz = quiz
                     question.save()
-            return redirect('quizzes:quiz_passing', lesson_id=quiz.lesson.pk)
+                    answer_formsets[index].instance = question
+                    answer_formsets[index].save()
+                return redirect('quizzes:quiz_passing', lesson_id=quiz.lesson.id)
+        else:
+            answer_formsets = [
+                AnswerFormSet(prefix=f'answers_{index}') for index in range(question_formset.total_form_count())
+            ]
     else:
-        formset = QuestionFormSet(queryset=Question.objects.none())
+        question_formset = QuestionFormSet(queryset=Question.objects.none())
+        answer_formsets = [
+            AnswerFormSet(prefix=f'answers_{index}') for index in range(question_formset.total_form_count())
+        ]
+
+    question_answer_formsets = list(zip(question_formset.forms, answer_formsets))
+
     return render(
         request,
         'quizzes/quiz_add_questions.html',
-        context=dict(
-            quiz=quiz,
-            formset=formset
-        )
+        context={
+            'quiz': quiz,
+            'question_formset': question_formset,
+            'question_answer_formsets': question_answer_formsets,
+        }
     )
+

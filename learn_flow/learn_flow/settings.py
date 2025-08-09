@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_bootstrap5',
+    'widget_tweaks',
     'courses.apps.CoursesConfig',
     'quizzes.apps.QuizzesConfig',
     'users.apps.UsersConfig'

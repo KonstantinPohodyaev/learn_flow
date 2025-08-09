@@ -1,67 +1,70 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
 
 {% block title %}
-  Прохождение теста
+  Прохождение теста — {{ quiz.title }}
 {% endblock %}
 
 {% block content %}
 <div class="container mt-5">
   <div class="card bg-dark text-light shadow-lg rounded-4 border-info">
-    <div class="card-header text-center fs-2 text-light bg-info rounded-top">
-      📝 Тест: {{ quiz.title }}
+    <div class="card-header text-center fs-3 fw-bold text-light bg-info rounded-top d-flex justify-content-center align-items-center gap-2">
+      <span class="fs-2">📝</span> Прохождение теста: <span class="ms-2">{{ quiz.title }}</span>
     </div>
 
-    <div class="card-body p-5">
-      <form method="post">
+    <div class="card-body p-4 p-md-5">
+      <form method="post" novalidate>
         {% csrf_token %}
 
-        {% for field in form %}
-          <div class="mb-5">
-            <label class="form-label fs-5 text-info">{{ field.label }}</label>
-            <div class="ms-3">
-              {% for radio in field %}
-                <div class="form-check">
-                  {{ radio.tag }}
-                  <label class="form-check-label text-light">{{ radio.choice_label }}</label>
-                </div>
-              {% endfor %}
-            </div>
-            {% if field.errors %}
-              <div class="text-danger small mt-2">{{ field.errors }}</div>
-            {% endif %}
-          </div>
-        {% endfor %}
-
         {% if quiz.questions.exists %}
-          <div class="text-center mt-4">
-            <button type="submit" class="btn btn-outline-success rounded-pill">
+          {% for field in form %}
+            <div class="card bg-secondary bg-opacity-75 mb-4 shadow-sm rounded-4 p-4">
+              <h5 class="card-title text-info fw-semibold mb-3">Вопрос {{ forloop.counter }}</h5>
+              <label class="form-label fs-5 text-info fw-semibold">{{ field.label }}</label>
+
+              <div class="ms-3 mt-3">
+                {% for radio in field %}
+                  <div class="form-check form-check-inline">
+                    {{ radio.tag }}
+                    <label class="form-check-label text-light" for="{{ radio.id_for_label }}">
+                      {{ radio.choice_label }}
+                    </label>
+                  </div>
+                {% endfor %}
+
+              </div>
+
+              {% if field.errors %}
+                <div class="text-danger small mt-2">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          <div class="text-center mt-5">
+            <button type="submit" class="btn btn-success btn-lg rounded-pill px-5 shadow-sm">
               ✅ Отправить ответы
             </button>
           </div>
         {% else %}
-          <div class="text-center text-warning mt-4 fs-3">
+          <div class="alert alert-warning text-center fs-4 py-4 mt-5 rounded-4 shadow">
             Для этого теста вопросы еще не загружены!
           </div>
         {% endif %}
       </form>
     </div>
 
-    <div class="card-footer text-center">
+    <div class="card-footer text-center bg-transparent border-info">
       {% if user.is_superuser %}
-        <ul class="nav flex-column align-items-center mt-5">
-          <li class="nav-item my-2">
-            <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}"
-              class="btn btn-outline-success rounded-pill w-100">
-              ← Вернуться к уроку
-            </a>
-          </li>
-          <li class="nav-item my-2">
-            <a href="{% url 'quizzes:add_questions' quiz.pk %}"
-              class="btn btn-outline-primary rounded-pill w-100">
-              ✏️ Добавить вопросы
-            </a>
-          </li>
-        </ul>
+        <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+          <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}"
+             class="btn btn-outline-success rounded-pill px-4 fw-semibold shadow-sm">
+            ← Вернуться к уроку
+          </a>
+          <a href="{% url 'quizzes:add_questions' quiz.pk %}"
+             class="btn btn-outline-primary rounded-pill px-4 fw-semibold shadow-sm">
+            ✏️ Добавить вопросы
+          </a>
+        </div>
       {% endif %}
     </div>
   </div>
