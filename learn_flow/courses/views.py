@@ -13,6 +13,7 @@ from courses.mixins import (
     ModuleFormTemplateObjectNameMixin, LessonModelMixin,
     LessonFormTemplateObjectNameMixin
 )
+from courses.utils import check_passed_all_quizzes, generate_certificate_file
 
 
 class CoursesListView(CourseModelMixin, ListView):
@@ -36,6 +37,22 @@ class CourseDetailView(CourseModelMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['modules'] = self.get_object().modules.all()
+        user = self.request.user
+        course = self.get_object()
+        certificate = Certificate.objects.filter(
+            user=user, course=course
+        ).first()
+        if (
+            user.is_authenticated
+            and not certificate
+            and check_passed_all_quizzes(user, course)
+        ):
+            certificate = Certificate.objects.create(
+                user=user,
+                course=course,
+                file=generate_certificate_file(user, course)
+            )
+        context['certificate'] = certificate
         return context
 
 

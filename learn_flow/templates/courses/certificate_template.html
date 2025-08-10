@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+  body {
+    font-family: 'Times New Roman', serif;
+    background: url('{{ static "images/certificate_bg.png" }}') no-repeat center center;
+    background-size: cover;
+    text-align: center;
+    padding: 100px;
+  }
+  h1 {
+    font-size: 48px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+  .username {
+    font-size: 32px;
+    margin: 20px 0;
+    color: #34495e;
+  }
+  .course {
+    font-size: 24px;
+    color: #7f8c8d;
+  }
+</style>
+</head>
+<body>
+  <h1>СЕРТИФИКАТ</h1>
+  <div class="username">{{ user.get_full_name }}</div>
+  <div class="course">За успешное прохождение курса:</div>
+  <div class="course"><strong>{{ course.title }}</strong></div>
+</body>
+</html>
