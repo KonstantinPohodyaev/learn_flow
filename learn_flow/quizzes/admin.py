@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Quiz, Question, Answer, UserAnswer, UserQuizResult
-
+from .models import Answer, Question, Quiz, UserAnswer, UserQuizResult
 
 admin.site.register(Quiz)
 admin.site.register(Question)

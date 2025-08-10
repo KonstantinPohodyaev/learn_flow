@@ -1,7 +1,6 @@
+from courses.forms import CourseForm, LessonForm, ModuleForm
+from courses.models import Course, Lesson, Module
 from django.urls import reverse_lazy
-
-from courses.models import Course, Module, Lesson
-from courses.forms import CourseForm, ModuleForm, LessonForm
 
 
 class CourseModelMixin:

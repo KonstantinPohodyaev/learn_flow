@@ -1,6 +1,5 @@
 from django.db import models
 
-
 QUIZ_TITLE_VERBOSE_NAME = 'Название'
 QUIZ_TITLE_MAX_LENGTH = 127
 QUIZ_TITLE_HELP_TEXT = 'Введите название теста'

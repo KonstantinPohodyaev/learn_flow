@@ -1,16 +1,14 @@
-from datetime import datetime
+import io
 import os
+from datetime import datetime
 
 from django.core.files.base import ContentFile
 from quizzes.models import Quiz, UserQuizResult
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib.pagesizes import A4
-from reportlab.lib import colors
-from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
-from reportlab.lib.utils import ImageReader
-import io
 
 
 def check_passed_all_quizzes(user, course):

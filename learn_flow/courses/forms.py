@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Course, Module, Lesson, Certificate
+from .models import Certificate, Course, Lesson, Module
 
 
 class CourseForm(forms.ModelForm):

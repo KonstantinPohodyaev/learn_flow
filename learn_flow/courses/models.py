@@ -1,6 +1,5 @@
 from django.db import models
 
-
 COURSE_TITLE_VERBOSE_NAME = 'Название курса'
 COURSE_TITLE_MAX_LENGTH = 127
 COURSE_TITLE_HELP_TEXT = 'Введите название курса'

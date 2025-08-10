@@ -1,7 +1,5 @@
 from django.urls import path
-
-from quizzes.views import showing_and_passing_quiz, quiz_create, add_questions
-
+from quizzes.views import add_questions, quiz_create, showing_and_passing_quiz
 
 app_name = 'quizzes'
 

@@ -1,8 +1,6 @@
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin)
 from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser, PermissionsMixin, BaseUserManager
-)
-
 
 EMAIL_VERBOSE_NAME = 'Почта'
 EMAIL_HELP_TEXT = 'Введите почту'

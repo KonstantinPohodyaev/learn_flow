@@ -1,11 +1,8 @@
-from django.shortcuts import render, get_object_or_404, redirect
-
 from courses.models import Lesson
-from quizzes.models import UserAnswer, Quiz, Question, UserQuizResult
-from quizzes.forms import (
-    QuizForm, QuizFormCreate, QuestionFormSet, QuestionForm,
-    AnswerFormSet
-)
+from django.shortcuts import get_object_or_404, redirect, render
+from quizzes.forms import (AnswerFormSet, QuestionForm, QuestionFormSet,
+                           QuizForm, QuizFormCreate)
+from quizzes.models import Question, Quiz, UserAnswer, UserQuizResult
 
 
 def showing_and_passing_quiz(request, lesson_id):

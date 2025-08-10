@@ -1,9 +1,7 @@
 import random
 
 from django import forms
-
-from quizzes.models import Quiz, Question, Answer
-
+from quizzes.models import Answer, Question, Quiz
 
 QUESTION_FORMSET_EXTRA = 3
 ANSWER_FORMSET_EXTRA = 4

@@ -1,19 +1,16 @@
-from django.views.generic import (
-    ListView, CreateView, DetailView, DeleteView, UpdateView
-)
-from django.urls import reverse_lazy
-from django.shortcuts import get_object_or_404
-
-from courses.models import Course, Module, Lesson, Certificate
-from quizzes.models import UserQuizResult
-from courses.forms import CourseForm, ModuleForm, LessonForm
-from courses.mixins import (
-    CourseModelMixin, CourseFormTemplateObjectNameMixin,
-    CourseSuccessUrlMixin, ModuleModelMixin,
-    ModuleFormTemplateObjectNameMixin, LessonModelMixin,
-    LessonFormTemplateObjectNameMixin
-)
+from courses.mixins import (CourseFormTemplateObjectNameMixin,
+                            CourseModelMixin, CourseSuccessUrlMixin,
+                            LessonFormTemplateObjectNameMixin,
+                            LessonModelMixin,
+                            ModuleFormTemplateObjectNameMixin,
+                            ModuleModelMixin)
+from courses.models import Certificate, Course, Lesson, Module
 from courses.utils import check_passed_all_quizzes, generate_certificate_file
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+from quizzes.models import UserQuizResult
 
 
 class CoursesListView(CourseModelMixin, ListView):
