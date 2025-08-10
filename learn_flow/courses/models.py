@@ -236,3 +236,11 @@ class Certificate(models.Model):
         CERTIFICATE_FILE_VERBOSE_NAME,
         upload_to='certificates/'
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'course'],
+                name='%(app_label)s_%(class)s_user_course_unique_together'
+            )
+        ]
