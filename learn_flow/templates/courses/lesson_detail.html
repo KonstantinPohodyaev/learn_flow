@@ -31,6 +31,36 @@
         {% endif %}
       </div>
       <div class="card-footer text-center bg-secondary bg-opacity-25 py-3">
+        {% if user.is_superuser %}
+          <ul class="nav justify-content-center p-3 rounded shadow-sm">
+              <li class="nav-item mx-2">
+                <a href="{% url 'courses:lesson_update' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
+                  class="btn btn-outline-primary rounded-pill mx-2">
+                  ✏️ Редактировать урок
+                </a>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="{% url 'courses:lesson_delete' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
+                  class="btn btn-outline-danger rounded-pill mx-2">
+                  🗑️ Удалить урок
+                </a>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="#" 
+                  class="btn btn-outline-info rounded-pill mx-2">
+                  ➕ Прикрепить сертификат
+                </a>
+              </li>
+              {% if not quiz %}
+                <li class="nav-item mx-2">
+                <a href="{% url 'quizzes:quiz_create' lesson.pk %}" 
+                  class="btn btn-outline-info rounded-pill mx-2">
+                  🗑️ Добавить тест
+                </a>
+              </li>
+              {% endif %}
+          </ul>
+        {% endif %}
         <ul class="nav justify-content-center p-3 rounded shadow-sm">
           <li class="nav-item mx-2">
             <a href="{% url 'courses:module_detail' lesson.module.course.pk lesson.module.pk %}" 
@@ -38,35 +68,12 @@
               ← Назад к урокам
             </a>
           </li>
-          {% if user.is_superuser %}
-            <li class="nav-item mx-2">
-              <a href="{% url 'courses:lesson_update' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
-                class="btn btn-outline-primary rounded-pill mx-2">
-                ✏️ Редактировать урок
-              </a>
-            </li>
-            <li class="nav-item mx-2">
-              <a href="{% url 'courses:lesson_delete' lesson.module.course.pk lesson.module.pk lesson.pk %}" 
-                class="btn btn-outline-danger rounded-pill mx-2">
-                🗑️ Удалить урок
-              </a>
-            </li>
-            {% if not quiz %}
-              <li class="nav-item mx-2">
-              <a href="{% url 'quizzes:quiz_create' lesson.pk %}" 
-                class="btn btn-outline-info rounded-pill mx-2">
-                🗑️ Добавить тест
-              </a>
-            </li>
-            {% else %}
-              <li class="nav-item mx-2">
-                <a href="{% url 'quizzes:quiz_passing' lesson.pk %}"
-                class="btn btn-outline-success rounded-pill mx-2">
-                  Пройти тест
-                </a>
-              </li>
-            {% endif %}
-          {% endif %}
+          <li class="nav-item mx-2">
+            <a href="{% url 'quizzes:quiz_passing' lesson.pk %}"
+            class="btn btn-outline-success rounded-pill mx-2">
+              Пройти тест
+            </a>
+          </li>
         </ul>
       </div>
     </div>

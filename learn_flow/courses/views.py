@@ -4,7 +4,7 @@ from django.views.generic import (
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 
-from courses.models import Course, Module, Lesson
+from courses.models import Course, Module, Lesson, Certificate
 from quizzes.models import UserQuizResult
 from courses.forms import CourseForm, ModuleForm, LessonForm
 from courses.mixins import (
@@ -176,3 +176,9 @@ class LessonUpdateView(LessonFormTemplateObjectNameMixin, UpdateView):
             self.model.objects.select_related('module__course'),
             pk=self.kwargs[self.pk_url_kwarg]
         )
+
+
+class CertificateCreateView(CreateView):
+    model = Certificate
+    template_name = 'courses/certificate_create.html'
+    form_class = 

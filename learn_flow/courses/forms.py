@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Course, Module, Lesson
+from .models import Course, Module, Lesson, Certificate
 
 
 class CourseForm(forms.ModelForm):
@@ -19,3 +19,9 @@ class LessonForm(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ['title', 'content', 'video_url', 'file']
+
+
+class CertificateForm(forms.ModelForm):
+    class Meta:
+        model = Certificate
+        fields = ['file']
