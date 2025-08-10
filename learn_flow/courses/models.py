@@ -44,6 +44,8 @@ COURSE_PROGRESS_VERBOSE_NAME_PLURAL = 'Прогресс курсов'
 CERTIFICATE_USER_VERBOSE_NAME = 'Пользователь'
 CERTIFICATE_COURSE_VERBOSE_NAME = 'Курс'
 CERTIFICATE_FILE_VERBOSE_NAME = 'Файл диплома'
+CERTIFICATE_VERBOSE_NAME = 'Сертификат'
+CERTIFICATE_VERBOSE_NAME_PLURAL = 'Сертификаты'
 
 
 class Course(models.Model):
@@ -239,12 +241,18 @@ class Certificate(models.Model):
     )
 
     class Meta:
+        verbose_name = CERTIFICATE_VERBOSE_NAME
+        verbose_name_plural = CERTIFICATE_VERBOSE_NAME_PLURAL
         constraints = [
             models.UniqueConstraint(
                 fields=['user', 'course'],
                 name='%(app_label)s_%(class)s_user_course_unique_together'
             )
         ]
+
+    def __str__(self):
+        return self.file.name
+
 
     def delete(self, *args, **kwargs):
         if self.file:
