@@ -32,8 +32,8 @@
     </div>
 
     <div class="card-footer d-flex justify-content-between">
-      <a href="{% url 'courses:lesson_detail' lesson.module.course.pk lesson.module.pk lesson.pk %}" class="btn btn-outline-light rounded-pill">
-        ← Назад к уроку
+      <a href="{% url 'courses:module_detail' lesson.module.course.pk lesson.module.pk %}" class="btn btn-outline-light rounded-pill">
+        ← Назад к урокам
       </a>
       <a href="{% url 'quizzes:quiz_passing' quiz.lesson.pk %}" class="btn btn-outline-info rounded-pill">
         🔁 Пройти снова

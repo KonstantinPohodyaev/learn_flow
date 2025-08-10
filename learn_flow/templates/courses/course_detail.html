@@ -74,6 +74,15 @@
           </div>
         </div>
       </div>
+      <div class="card-footer m-3 ">
+        {% if certificate %}
+          <a href="{{ certificate.file.url }}" class="btn btn-outline-success">
+            📄 Скачать сертификат
+          </a>
+        {% else %}
+          <div class="text-info">Сертификат будет доступен после успешного прохождения всех тестов этого курса!</div>
+        {% endif %}
+      </div>
     </div>
   </div>
   <style>

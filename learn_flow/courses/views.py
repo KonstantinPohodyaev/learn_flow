@@ -42,6 +42,8 @@ class CourseDetailView(CourseModelMixin, DetailView):
         certificate = Certificate.objects.filter(
             user=user, course=course
         ).first()
+        if certificate and not check_passed_all_quizzes(user, course):
+            certificate.delete()
         if (
             user.is_authenticated
             and not certificate
@@ -193,9 +195,3 @@ class LessonUpdateView(LessonFormTemplateObjectNameMixin, UpdateView):
             self.model.objects.select_related('module__course'),
             pk=self.kwargs[self.pk_url_kwarg]
         )
-
-
-class CertificateCreateView(CreateView):
-    model = Certificate
-    template_name = 'courses/certificate_create.html'
-    form_class = 
