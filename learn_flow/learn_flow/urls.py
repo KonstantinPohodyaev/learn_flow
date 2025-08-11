@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.views.generic import CreateView
 from django.urls import include, path, reverse_lazy
 
+from courses.views import vk_callback
 from users.forms import CustomUserCreationForm
 
 urlpatterns = [
@@ -19,6 +20,7 @@ urlpatterns = [
         name='registration'
     ),
     path('auth/', include('django.contrib.auth.urls')),
+    path('accounts/vk/callback/', vk_callback, name='vk_callback'),
     path('', include('courses.urls'))
 ]
 
