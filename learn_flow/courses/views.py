@@ -36,22 +36,25 @@ class CourseDetailView(CourseModelMixin, DetailView):
         context['modules'] = self.get_object().modules.all()
         user = self.request.user
         course = self.get_object()
-        certificate = Certificate.objects.filter(
-            user=user, course=course
-        ).first()
-        if certificate and not check_passed_all_quizzes(user, course):
-            certificate.delete()
-        if (
-            user.is_authenticated
-            and not certificate
-            and check_passed_all_quizzes(user, course)
-        ):
-            certificate = Certificate.objects.create(
-                user=user,
-                course=course,
-                file=generate_certificate_file(user, course)
-            )
-        context['certificate'] = certificate
+        if user.is_authenticated:
+            certificate = Certificate.objects.filter(
+                user=user, course=course
+            ).first()
+            if certificate and not check_passed_all_quizzes(user, course):
+                certificate.delete()
+            if (
+                user.is_authenticated
+                and not certificate
+                and check_passed_all_quizzes(user, course)
+            ):
+                certificate = Certificate.objects.create(
+                    user=user,
+                    course=course,
+                    file=generate_certificate_file(user, course)
+                )
+            context['certificate'] = certificate
+        else:
+            certificate = None
         return context
 
 
@@ -89,13 +92,17 @@ class ModuleDetailView(ModuleModelMixin, DetailView):
         context = super().get_context_data(**kwargs)
         lessons = self.get_object().lessons.all()
         lessons_and_user_quiz_results = []
+        user = self.request.user
         for lesson in lessons:
             try:
                 quiz = lesson.quiz
-                user_quiz_result = UserQuizResult.objects.filter(
-                    quiz=quiz,
-                    user=self.request.user
-                ).first()
+                if user.is_authenticated:
+                    user_quiz_result = UserQuizResult.objects.filter(
+                        quiz=quiz,
+                        user=user
+                    ).first()
+                else:
+                    user_quiz_result = None
             except Lesson.quiz.RelatedObjectDoesNotExist:
                 user_quiz_result = None
             lessons_and_user_quiz_results.append(
@@ -103,6 +110,7 @@ class ModuleDetailView(ModuleModelMixin, DetailView):
             )
         context['lessons_and_user_quiz_results'] = lessons_and_user_quiz_results
         return context
+
 
     def get_object(self):
         return get_object_or_404(

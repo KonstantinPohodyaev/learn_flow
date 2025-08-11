@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card logout-card shadow-lg border-0 text-center">
+    <div class="card-header gradient-text fw-bold fs-4">
+      👋 Вы вышли из системы
+    </div>
+    <div class="card-body p-4">
+      <p class="mb-4">Спасибо, что были с нами!<br>Ждём вас снова 😊</p>
+      <a href="{% url 'courses:course_list' %}" class="btn custom-btn-outline w-100">
+        ⬅ На главную
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Карточка */
+  .logout-card {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  /* Заголовок */
+  .gradient-text {
+    background: linear-gradient(45deg, #0ea5e9, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 200%;
+    transition: background-position 0.5s ease;
+  }
+  .gradient-text:hover {
+    background-position: 100% 0;
+  }
+
+  /* Кнопка */
+  .custom-btn-outline {
+    border: 2px solid #0ea5e9;
+    color: #0ea5e9;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border-radius: 25px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .custom-btn-outline:hover {
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+    color: #0f172a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+  }
+</style>
+{% endblock %}

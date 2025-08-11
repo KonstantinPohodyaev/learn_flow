@@ -253,7 +253,6 @@ class Certificate(models.Model):
     def __str__(self):
         return self.file.name
 
-
     def delete(self, *args, **kwargs):
         if self.file:
             if os.path.isfile(self.file.path):

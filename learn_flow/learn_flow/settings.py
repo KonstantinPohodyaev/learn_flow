@@ -101,3 +101,5 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = 'courses:course_list'

@@ -68,12 +68,14 @@
               ← Назад к урокам
             </a>
           </li>
-          <li class="nav-item mx-2">
-            <a href="{% url 'quizzes:quiz_passing' lesson.pk %}"
-            class="btn btn-outline-success rounded-pill mx-2">
-              Пройти тест
-            </a>
-          </li>
+          {% if user.is_authenticated %}
+            <li class="nav-item mx-2">
+              <a href="{% url 'quizzes:quiz_passing' lesson.pk %}"
+              class="btn btn-outline-success rounded-pill mx-2">
+                Пройти тест
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>

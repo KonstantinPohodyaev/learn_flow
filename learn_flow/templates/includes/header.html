@@ -11,19 +11,45 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto align-items-center">
         <li class="nav-item mx-2">
-          <a class="nav-link custom-link" href="{% url 'courses:course_list' %}">🏠 Главная</a>
+          <a class="nav-link custom-link {% if request.resolver_match.url_name == 'course_list' %}active{% endif %}" 
+             aria-current="{% if request.resolver_match.url_name == 'course_list' %}page{% endif %}"
+             href="{% url 'courses:course_list' %}">🏠 Главная</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link custom-link" href="#">ℹ️ О нас</a>
+          <a class="nav-link custom-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
+             aria-current="{% if request.resolver_match.url_name == 'about' %}page{% endif %}"
+             href="">ℹ️ О нас</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link custom-link" href="#">📞 Контакты</a>
+          <a class="nav-link custom-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}" 
+             aria-current="{% if request.resolver_match.url_name == 'contacts' %}page{% endif %}"
+             href="">📞 Контакты</a>
         </li>
-
-        {% if user.is_superuser %}
+        {% if user.is_authenticated %}
+          {% if user.is_superuser %}
+            <li class="nav-item mx-2">
+              <a class="btn btn-sm btn-outline-info rounded-pill px-3 custom-btn-outline" href="{% url 'admin:index' %}">
+                ⚙️ Админка
+              </a>
+            </li>
+          {% endif %}
           <li class="nav-item mx-2">
-            <a class="btn btn-sm btn-outline-info rounded-pill px-3 custom-btn-outline" href="{% url 'admin:index' %}">
-              ⚙️ Админка
+            <form method="post" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-info rounded-pill px-3 custom-btn-outline">
+                🚪 Выйти
+              </button>
+            </form>
+          </li>
+        {% else %}
+          <li class="nav-item mx-2">
+            <a class="btn btn-sm custom-btn-outline rounded-pill px-3" href="{% url 'login' %}">
+              🔑 Войти
+            </a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="btn btn-sm btn-outline-success rounded-pill px-3" href="">
+              📝 Регистрация
             </a>
           </li>
         {% endif %}
@@ -44,6 +70,7 @@
     -webkit-text-fill-color: transparent;
     transition: background-position 0.5s ease;
     background-size: 200% 200%;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
   .gradient-text:hover {
     background-position: 100% 0;
@@ -74,13 +101,28 @@
     width: 100%;
   }
 
+  .custom-link.active {
+    color: #22d3ee;
+  }
+  .custom-link.active::after {
+    width: 100%;
+  }
+
   .custom-btn-outline {
     border-color: #0ea5e9;
     color: #0ea5e9;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
   }
   .custom-btn-outline:hover {
-    background-color: #0ea5e9;
+    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
     color: #0f172a;
+  }
+
+  @media (max-width: 991px) {
+    .navbar-collapse {
+      background: #1b263b;
+      padding: 1rem;
+      border-radius: 10px;
+    }
   }
 </style>
