@@ -15,19 +15,20 @@
         <p class="text-secondary mb-4" style="line-height: 1.6;">
           {{ lesson.content|linebreaks }}
         </p>
+        {% if user.is_authenticated %}
+          {% if lesson.video_url %}
+            <h4 class="text-info mb-3">Видео</h4>
+            <div class="ratio ratio-16x9 mb-4 rounded overflow-hidden shadow">
+              <iframe src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+          {% endif %}
 
-        {% if lesson.video_url %}
-          <h4 class="text-info mb-3">Видео</h4>
-          <div class="ratio ratio-16x9 mb-4 rounded overflow-hidden shadow">
-            <iframe src="{{ lesson.video_url }}" frameborder="0" allowfullscreen></iframe>
-          </div>
-        {% endif %}
-
-        {% if lesson.file %}
-          <h5 class="text-info mb-3">Прикреплённый файл</h5>
-          <a class="btn btn-outline-light rounded-pill px-4" href="{{ lesson.file.url }}" download>
-            📥 Скачать файл
-          </a>
+          {% if lesson.file %}
+            <h5 class="text-info mb-3">Прикреплённый файл</h5>
+            <a class="btn btn-outline-light rounded-pill px-4" href="{{ lesson.file.url }}" download>
+              📥 Скачать файл
+            </a>
+          {% endif %}
         {% endif %}
       </div>
       <div class="card-footer text-center bg-secondary bg-opacity-25 py-3">

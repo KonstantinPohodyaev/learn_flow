@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="card col-5 mx-auto mt-5 shadow-lg border-0">
+  <div class="card-header gradient-text fw-bold fs-4">
+    📝 Регистрация нового пользователя
+  </div>
+  <div class="card-body">
+    <form method="post" action="">
+      {% csrf_token %}
+      {% bootstrap_form form layout="vertical" %}
+      {% bootstrap_button button_type="submit" content="Зарегистрироваться" %}
+    </form>
+  </div>
+  <div class="card-footer text-center">
+    Уже зарегистрированы? 
+    <a href="{% url 'login' %}" class="custom-link fw-semibold">Войти</a>
+  </div>
+</div>
+{% endblock %}
