@@ -1,12 +1,14 @@
+from http import HTTPStatus
+
 from courses.mixins import (CourseFormTemplateObjectNameMixin,
                             CourseModelMixin, CourseSuccessUrlMixin,
                             LessonFormTemplateObjectNameMixin,
                             LessonModelMixin,
                             ModuleFormTemplateObjectNameMixin,
-                            ModuleModelMixin)
+                            ModuleModelMixin, CheckSuperUserStatus)
 from courses.models import Certificate, Course, Lesson, Module
 from courses.utils import check_passed_all_quizzes, generate_certificate_file
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
@@ -20,6 +22,7 @@ class CoursesListView(CourseModelMixin, ListView):
 
 
 class CourseCreateView(
+    CheckSuperUserStatus,
     CourseFormTemplateObjectNameMixin,
     CourseSuccessUrlMixin, CreateView
 ):
@@ -58,12 +61,14 @@ class CourseDetailView(CourseModelMixin, DetailView):
         return context
 
 
-class CourseDeleteView(CourseModelMixin, CourseSuccessUrlMixin, DeleteView):
+class CourseDeleteView(
+    CheckSuperUserStatus, CourseModelMixin, CourseSuccessUrlMixin, DeleteView
+):
     template_name = 'courses/course_delete.html'
 
 
 class CourseUpdateView(
-    CourseFormTemplateObjectNameMixin, UpdateView
+    CheckSuperUserStatus, CourseFormTemplateObjectNameMixin, UpdateView
 ):
     def get_success_url(self):
         return reverse_lazy(
@@ -71,7 +76,9 @@ class CourseUpdateView(
         )
 
 
-class ModuleCreateView(ModuleFormTemplateObjectNameMixin, CreateView):
+class ModuleCreateView(
+    CheckSuperUserStatus, ModuleFormTemplateObjectNameMixin, CreateView
+):
     def form_valid(self, form):
         form.instance.course = Course.objects.get(
             pk=self.kwargs[self.pk_url_kwarg]
@@ -114,12 +121,18 @@ class ModuleDetailView(ModuleModelMixin, DetailView):
 
     def get_object(self):
         return get_object_or_404(
-            self.model.objects.select_related('course').prefetch_related('lessons').all(),
+            self.model.objects.select_related(
+                'course'
+            ).prefetch_related(
+                'lessons'
+            ).all(),
             pk=self.kwargs[self.pk_url_kwarg]
         )
 
 
-class ModuleDeleteView(ModuleModelMixin, DeleteView):
+class ModuleDeleteView(
+    CheckSuperUserStatus, ModuleModelMixin, DeleteView
+):
     def get_success_url(self):
         return reverse_lazy(
             'courses:course_detail',
@@ -127,7 +140,9 @@ class ModuleDeleteView(ModuleModelMixin, DeleteView):
         )
 
 
-class ModuleUpdateView(ModuleFormTemplateObjectNameMixin, UpdateView):
+class ModuleUpdateView(
+    CheckSuperUserStatus, ModuleFormTemplateObjectNameMixin, UpdateView
+):
     def get_object(self):
         return self.model.objects.select_related('course').get(
             pk=self.kwargs[self.pk_url_kwarg]
@@ -140,7 +155,9 @@ class ModuleUpdateView(ModuleFormTemplateObjectNameMixin, UpdateView):
         )
 
 
-class LessonCreateView(LessonFormTemplateObjectNameMixin, CreateView):
+class LessonCreateView(
+    CheckSuperUserStatus, LessonFormTemplateObjectNameMixin, CreateView
+):
     def form_valid(self, form):
         form.instance.course = Course.objects.get(pk=self.kwargs['course_id'])
         form.instance.module = Module.objects.get(pk=self.kwargs['module_id'])
@@ -173,7 +190,9 @@ class LessonDetailView(LessonModelMixin, DetailView):
         )
 
 
-class LessonDeleteView(LessonModelMixin, DeleteView):
+class LessonDeleteView(
+    CheckSuperUserStatus, LessonModelMixin, DeleteView
+):
     template_name = 'courses/lesson_delete.html'
 
     def get_success_url(self):
@@ -183,7 +202,9 @@ class LessonDeleteView(LessonModelMixin, DeleteView):
         )
 
 
-class LessonUpdateView(LessonFormTemplateObjectNameMixin, UpdateView):
+class LessonUpdateView(
+    CheckSuperUserStatus, LessonFormTemplateObjectNameMixin, UpdateView
+):
     def get_success_url(self):
         lesson = self.get_object()
         return reverse_lazy(
@@ -200,3 +221,16 @@ class LessonUpdateView(LessonFormTemplateObjectNameMixin, UpdateView):
             self.model.objects.select_related('module__course'),
             pk=self.kwargs[self.pk_url_kwarg]
         )
+
+
+def custom_404(request, exception):
+    return render(request, 'errors/404.html', status=HTTPStatus.NOT_FOUND)
+
+def custom_500(request):
+    return render(request, 'errors/500.html', status=HTTPStatus.INTERNAL_SERVER_ERROR)
+
+def custom_403(request, exception):
+    return render(request, 'errors/403.html', status=HTTPStatus.FORBIDDEN)
+
+def custom_400(request, exception):
+    return render(request, 'errors/400.html', status=HTTPStatus.BAD_REQUEST)

@@ -27,3 +27,8 @@ if settings.DEBUG:
     urlpatterns += static(
         settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
     )
+
+handler404 = 'courses.views.custom_404'
+handler500 = 'courses.views.custom_500'
+handler403 = 'courses.views.custom_403'
+handler400 = 'courses.views.custom_400'

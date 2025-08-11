@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center mt-5">
+    <h1 class="display-1 gradient-text">400</h1>
+    <h3>Плохой запрос</h3>
+    <p>Ваш запрос некорректен. Пожалуйста, проверьте и попробуйте снова.</p>
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary">На главную</a>
+  </div>
+{% endblock %}

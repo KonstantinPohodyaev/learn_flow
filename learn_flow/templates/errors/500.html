@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center mt-5">
+    <h1 class="display-1 gradient-text">500</h1>
+    <h3>Внутренняя ошибка сервера</h3>
+    <p>Что-то пошло не так. Пожалуйста, попробуйте позже.</p>
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary">На главную</a>
+  </div>
+{% endblock %}

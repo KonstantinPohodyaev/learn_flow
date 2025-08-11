@@ -1,10 +1,12 @@
 from courses.models import Lesson
 from django.shortcuts import get_object_or_404, redirect, render
-from quizzes.forms import (AnswerFormSet, QuestionForm, QuestionFormSet,
+from django.contrib.auth.decorators import login_required, user_passes_test
+from quizzes.forms import (AnswerFormSet, QuestionFormSet,
                            QuizForm, QuizFormCreate)
 from quizzes.models import Question, Quiz, UserAnswer, UserQuizResult
 
 
+@login_required
 def showing_and_passing_quiz(request, lesson_id):
     current_lesson = get_object_or_404(
         Lesson.objects
@@ -76,6 +78,7 @@ def showing_and_passing_quiz(request, lesson_id):
     )
 
 
+@user_passes_test(lambda user: user.is_superuser)
 def quiz_create(request, lesson_id):
     lesson = get_object_or_404(
         Lesson.objects.select_related('module__course').all(),

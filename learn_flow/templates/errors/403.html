@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="text-center mt-5">
+    <h1 class="display-1 gradient-text">403</h1>
+    <h3>Доступ запрещён</h3>
+    <p>У вас нет прав для просмотра этой страницы.</p>
+    <a href="{% url 'courses:course_list' %}" class="btn btn-primary">На главную</a>
+  </div>
+{% endblock %}

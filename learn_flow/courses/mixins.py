@@ -1,6 +1,7 @@
 from courses.forms import CourseForm, LessonForm, ModuleForm
 from courses.models import Course, Lesson, Module
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class CourseModelMixin:
@@ -47,3 +48,9 @@ class LessonFormTemplateObjectNameMixin:
     form_class = LessonForm
     context_object_name = 'lesson'
     pk_url_kwarg = 'lesson_id'
+
+
+class CheckSuperUserStatus(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
+
