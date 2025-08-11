@@ -2,103 +2,103 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center min-vh-100">
-  <div class="card login-card shadow-lg border-0">
-    <div class="card-header text-center gradient-text fw-bold fs-4">
-      🔐 Войти в систему
-    </div>
-    <div class="card-body p-4">
-      
-      {% if next %}
-        {% if user.is_authenticated %}
-          <div class="alert alert-warning">
-            У вашего аккаунта нет доступа к этой странице.
-            Войдите под другим аккаунтом.
-          </div>
-        {% else %}
-          <div class="alert alert-info">
-            Пожалуйста, войдите в систему, чтобы просматривать эту страницу.
-          </div>
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card login-card shadow-lg border-0">
+      <div class="card-header text-center gradient-text fw-bold fs-4">
+        🔐 Войти в систему
+      </div>
+      <div class="card-body p-4">
+        
+        {% if next %}
+          {% if user.is_authenticated %}
+            <div class="alert alert-warning">
+              У вашего аккаунта нет доступа к этой странице.
+              Войдите под другим аккаунтом.
+            </div>
+          {% else %}
+            <div class="alert alert-info">
+              Пожалуйста, войдите в систему, чтобы просматривать эту страницу.
+            </div>
+          {% endif %}
         {% endif %}
-      {% endif %}
 
-      <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="hidden" name="next" value="{{ next }}">
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <input type="hidden" name="next" value="{{ next }}">
 
-        <button type="submit" class="btn w-100 custom-btn-outline mt-3">
-          🚀 Войти
-        </button>
-      </form>
+          <button type="submit" class="btn w-100 custom-btn-outline mt-3">
+            🚀 Войти
+          </button>
+        </form>
 
-      <div class="text-center mt-3">
-        <a href="{% url 'password_reset' %}" class="custom-link small">Забыли пароль?</a>
+        <div class="text-center mt-3">
+          <a href="{% url 'password_reset' %}" class="custom-link small">Забыли пароль?</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<style>
-  /* Карточка */
-  .login-card {
-    width: 100%;
-    max-width: 400px;
-    border-radius: 15px;
-    overflow: hidden;
-  }
+  <style>
+    /* Карточка */
+    .login-card {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+    }
 
-  /* Заголовок */
-  .gradient-text {
-    background: linear-gradient(45deg, #0ea5e9, #22d3ee);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    transition: background-position 0.5s ease;
-  }
-  .gradient-text:hover {
-    background-position: 100% 0;
-  }
+    /* Заголовок */
+    .gradient-text {
+      background: linear-gradient(45deg, #0ea5e9, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      transition: background-position 0.5s ease;
+    }
+    .gradient-text:hover {
+      background-position: 100% 0;
+    }
 
-  /* Кнопка */
-  .custom-btn-outline {
-    border: 2px solid #0ea5e9;
-    color: #0ea5e9;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border-radius: 25px;
-  }
-  .custom-btn-outline:hover {
-    background: linear-gradient(90deg, #0ea5e9, #22d3ee);
-    color: #0f172a;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(14,165,233,0.3);
-  }
+    /* Кнопка */
+    .custom-btn-outline {
+      border: 2px solid #0ea5e9;
+      color: #0ea5e9;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border-radius: 25px;
+    }
+    .custom-btn-outline:hover {
+      background: linear-gradient(90deg, #0ea5e9, #22d3ee);
+      color: #0f172a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(14,165,233,0.3);
+    }
 
-  /* Ссылка */
-  .custom-link {
-    color: #a0aec0;
-    position: relative;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  .custom-link::after {
-    content: '';
-    display: block;
-    height: 2px;
-    width: 0;
-    background: #0ea5e9;
-    transition: width 0.3s ease;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    border-radius: 2px;
-  }
-  .custom-link:hover {
-    color: #22d3ee;
-  }
-  .custom-link:hover::after {
-    width: 100%;
-  }
-</style>
+    /* Ссылка */
+    .custom-link {
+      color: #a0aec0;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .custom-link::after {
+      content: '';
+      display: block;
+      height: 2px;
+      width: 0;
+      background: #0ea5e9;
+      transition: width 0.3s ease;
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      border-radius: 2px;
+    }
+    .custom-link:hover {
+      color: #22d3ee;
+    }
+    .custom-link:hover::after {
+      width: 100%;
+    }
+  </style>
 {% endblock %}
