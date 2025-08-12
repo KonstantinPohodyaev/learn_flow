@@ -4,7 +4,7 @@ from .views import (CourseCreateView, CourseDeleteView, CourseDetailView,
                     CoursesListView, CourseUpdateView, LessonCreateView,
                     LessonDeleteView, LessonDetailView, LessonUpdateView,
                     ModuleCreateView, ModuleDeleteView, ModuleDetailView,
-                    ModuleUpdateView)
+                    ModuleUpdateView, send_certificate)
 
 app_name = 'courses'
 
@@ -69,6 +69,11 @@ urlpatterns = [
         'lesson-update/course/<int:course_id>/module/<int:module_id>/lesson/<int:lesson_id>/',
         LessonUpdateView.as_view(),
         name='lesson_update'
+    ),
+    path(
+        'send-certificate-by-email/user/<int:user_id>/course/<int:course_id>/',
+        send_certificate,
+        name='send_certificate'
     ),
     path(
         '',

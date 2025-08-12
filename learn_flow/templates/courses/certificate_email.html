@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block title %}
+  Сертификат отправлен
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="card bg-dark text-light rounded-4 shadow-lg p-4 text-center animate-fade">
+    <div class="card-header fs-3 text-success border-0 mb-4">
+      🎉 Поздравляем!
+    </div>
+    <div class="card-body">
+      <p class="fs-5 mb-3">
+        Вы успешно получили <span class="text-info fw-bold">сертификат</span> за прохождение курса.
+      </p>
+      <p class="text-muted small">
+        Сертификат отправлен на вашу электронную почту.<br>
+        Проверьте входящие или папку <em>«Спам»</em>.
+      </p>
+      <a href="{% url 'courses:course_list' %}" class="btn btn-outline-info rounded-pill px-4 mt-3">
+        ⬅ Вернуться к курсам
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+</style>
+{% endblock %}

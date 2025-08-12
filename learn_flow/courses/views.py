@@ -14,9 +14,11 @@ from django.urls import reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from quizzes.models import UserQuizResult
 from users.models import CustomUser
+from courses.tasks import send_certificate_by_email
 
 
 class CoursesListView(CourseModelMixin, ListView):
@@ -274,3 +276,10 @@ def vk_callback(request):
     })
     login(request, user)
     return redirect('courses:course_list')
+
+
+@login_required
+def send_certificate(request, user_id, course_id):
+    send_certificate_by_email.delay(user_id, course_id)
+    return render(request, 'courses/certificate_email.html')
+

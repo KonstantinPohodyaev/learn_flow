@@ -20,7 +20,6 @@ def check_passed_all_quizzes(user, course):
         quiz__in=all_courses_quizzes,
         success_status=True
     ).count()
-    print(passed_quizzes, all_courses_quizzes.count())
     return (
         all_courses_quizzes.exists()
         and passed_quizzes == all_courses_quizzes.count()
