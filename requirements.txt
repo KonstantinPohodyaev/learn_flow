@@ -22,6 +22,7 @@ idna==3.10
 isort==6.0.1
 kombu==5.5.4
 mccabe==0.7.0
+mysqlclient==2.2.7
 oauthlib==3.3.1
 packaging==25.0
 pillow==11.3.0
@@ -50,3 +51,4 @@ vine==5.1.0
 wcwidth==0.2.13
 webencodings==0.5.1
 zopfli==0.2.3.post1
+gunicorn

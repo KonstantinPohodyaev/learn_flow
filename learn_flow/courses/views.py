@@ -87,14 +87,14 @@ class ModuleCreateView(
 ):
     def form_valid(self, form):
         form.instance.course = Course.objects.get(
-            pk=self.kwargs[self.pk_url_kwarg]
+            pk=self.kwargs['course_id']
         )
         return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy(
             'courses:course_detail',
-            args=[self.kwargs[self.pk_url_kwarg]]
+            args=[self.kwargs['course_id']]
         )
 
 
@@ -282,4 +282,3 @@ def vk_callback(request):
 def send_certificate(request, user_id, course_id):
     send_certificate_by_email.delay(user_id, course_id)
     return render(request, 'courses/certificate_email.html')
-
