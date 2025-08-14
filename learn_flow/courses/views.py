@@ -56,11 +56,15 @@ class CourseDetailView(CourseModelMixin, DetailView):
                 and not certificate
                 and check_passed_all_quizzes(user, course)
             ):
-                certificate = Certificate.objects.create(
+                certificate = Certificate(
                     user=user,
                     course=course,
-                    file=generate_certificate_file(user, course)
                 )
+                certificate.file.save(
+                    f'certificates/certificate_{user.id}_{course.id}.pdf',
+                    generate_certificate_file(user, course),
+                )
+                certificate.save()
             context['certificate'] = certificate
         else:
             certificate = None
