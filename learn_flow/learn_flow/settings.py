@@ -62,8 +62,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'learn_flow.wsgi.application'
 
-DATABASES = {
-    'default': {
+if DEBUG is True:
+    DEFAULT = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'test_db.db'
+    }
+
+
+else:
+    DEFAULT = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv('MYSQL_DATABASE', 'db'),
         'USER': os.getenv('MYSQL_USER', 'user'),
@@ -71,6 +78,9 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', 'db'),
         'PORT': os.getenv('DB_PORT', 3306)
     }
+
+DATABASES = {
+    'default': DEFAULT
 }
 
 
