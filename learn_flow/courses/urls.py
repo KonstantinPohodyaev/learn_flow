@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 
 from .views import (CourseCreateView, CourseDeleteView, CourseDetailView,
                     CoursesListView, CourseUpdateView, LessonCreateView,
@@ -74,6 +75,20 @@ urlpatterns = [
         'send-certificate-by-email/user/<int:user_id>/course/<int:course_id>/',
         send_certificate,
         name='send_certificate'
+    ),
+    path(
+        'about/',
+        TemplateView.as_view(
+            template_name='service/about.html'
+        ),
+        name='about'
+    ),
+    path(
+        'contacts/',
+        TemplateView.as_view(
+            template_name='service/contacts.html'
+        ),
+        name='contacts'
     ),
     path(
         '',

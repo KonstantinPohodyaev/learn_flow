@@ -18,12 +18,12 @@
         <li class="nav-item mx-2">
           <a class="nav-link custom-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" 
              aria-current="{% if request.resolver_match.url_name == 'about' %}page{% endif %}"
-             href="">ℹ️ О нас</a>
+             href="{% url 'courses:about' %}">ℹ️ О нас</a>
         </li>
         <li class="nav-item mx-2">
           <a class="nav-link custom-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}" 
              aria-current="{% if request.resolver_match.url_name == 'contacts' %}page{% endif %}"
-             href="">📞 Контакты</a>
+             href="{% url 'courses:contacts' %}">📞 Контакты</a>
         </li>
         {% if user.is_authenticated %}
           {% if user.is_superuser %}

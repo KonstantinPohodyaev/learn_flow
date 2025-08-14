@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h1 class="display-4 text-center text-primary mb-4 fw-bold">📬 Контакты</h1>
+  <p class="lead text-center mb-5 text-secondary">
+    Свяжитесь с нами любым удобным способом. Мы всегда рады ответить на ваши вопросы!
+  </p>
+
+  <div class="row justify-content-center g-4">
+    <div class="col-md-4">
+      <div class="card shadow-lg border-0 h-100 text-center py-4" style="border-radius: 15px;">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-envelope-fill fs-1 text-primary"></i>
+          </div>
+          <h5 class="card-title fw-bold">Электронная почта</h5>
+          <p class="card-text">konstantinpohodyaev@yandex.ru</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-lg border-0 h-100 text-center py-4" style="border-radius: 15px;">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-github fs-1 text-dark"></i>
+          </div>
+          <h5 class="card-title fw-bold">GitHub</h5>
+          <a href="https://github.com/KonstantinPohodyaev" target="_blank" class="stretched-link text-decoration-none">
+            github.com/KonstantinPohodyaev
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-lg border-0 h-100 text-center py-4" style="border-radius: 15px;">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="bi bi-telegram fs-1 text-info"></i>
+          </div>
+          <h5 class="card-title fw-bold">Telegram</h5>
+          <p class="card-text">@kspohodyaev</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h3 class="text-center text-primary mb-4">Мы на карте</h3>
+    <div class="ratio ratio-16x9 shadow rounded">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2244.123456!2d37.6173!3d55.7558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x414ab1234567890%3A0xabcdef1234567890!2sMoscow!5e0!3m2!1sen!2sru!4v1234567890"
+        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<style>
+.card:hover {
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+}
+</style>
+{% endblock %}
