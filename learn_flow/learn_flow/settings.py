@@ -114,7 +114,10 @@ STATICFILES_DIRS = [
 STATIC_ROOT = '/vol/backend/static'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = '/vol/backend/media'
+if DEBUG:
+    MEDIA_ROOT = 'media'
+else:
+    MEDIA_ROOT = '/vol/backend/media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
