@@ -90,4 +90,20 @@ class UserAnswerAdmin(admin.ModelAdmin):
         'user__email'
     ]
 
-custom_admin_site.register(UserQuizResult)
+@admin.register(UserQuizResult, site=custom_admin_site)
+class UserQuizResultAdmin(admin.ModelAdmin):
+    list_display = [
+        'user__email',
+        'quiz__title',
+        'score',
+        'success_status'
+    ]
+    search_fields = [
+        'user__email'
+    ]
+    list_filter = [
+        'user__email'
+    ]
+    list_display_links = [
+        'user__email'
+    ]
