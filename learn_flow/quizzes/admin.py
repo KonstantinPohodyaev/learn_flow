@@ -51,6 +51,24 @@ class QuestionSite(admin.ModelAdmin):
     ]
 
 
-custom_admin_site.register(Answer)
+@admin.reggister(Answer, site=custom_admin_site)
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = [
+        'question__quiz__title',
+        'text',
+        'is_correct'
+    ]
+    search_fields = [
+        'text'
+    ]
+    list_filter = [
+        'text',
+        'is_correct'
+    ]
+    list_display_links = [
+        'text'
+    ]
+
+
 custom_admin_site.register(UserAnswer)
 custom_admin_site.register(UserQuizResult)
