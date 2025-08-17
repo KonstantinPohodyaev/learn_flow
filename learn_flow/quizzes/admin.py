@@ -1,9 +1,10 @@
 from django.contrib import admin
 
-from .models import Answer, Question, Quiz, UserAnswer, UserQuizResult
+from quizzes.models import Answer, Question, Quiz, UserAnswer, UserQuizResult
+from core_admin.admin_site import custom_admin_site
 
-admin.site.register(Quiz)
-admin.site.register(Question)
-admin.site.register(Answer)
-admin.site.register(UserAnswer)
-admin.site.register(UserQuizResult)
+custom_admin_site.register(Quiz)
+custom_admin_site.register(Question)
+custom_admin_site.register(Answer)
+custom_admin_site.register(UserAnswer)
+custom_admin_site.register(UserQuizResult)

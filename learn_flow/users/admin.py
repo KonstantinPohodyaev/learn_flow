@@ -1,5 +1,4 @@
-from django.contrib import admin
+from users.models import CustomUser
+from core_admin.admin_site import custom_admin_site
 
-from .models import CustomUser
-
-admin.site.register(CustomUser)
+custom_admin_site.register(CustomUser)

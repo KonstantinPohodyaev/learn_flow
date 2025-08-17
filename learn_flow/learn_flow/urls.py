@@ -3,12 +3,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import CreateView
 from django.urls import include, path, reverse_lazy
+from courses.admin import custom_admin_site
 
 from courses.views import vk_callback
 from users.forms import CustomUserCreationForm
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', custom_admin_site.urls),
     path('quiz/', include('quizzes.urls')),
     path(
         'auth/registration',

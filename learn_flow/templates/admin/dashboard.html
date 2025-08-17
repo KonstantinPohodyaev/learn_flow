@@ -1,0 +1,27 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1 class="text-center">📊 Дашборд LearnFlow</h1>
+
+<div style="display: flex; gap: 20px; margin-top: 30px;">
+    <div style="flex: 1; padding: 20px; background: #394764; border-radius: 10px;">
+        <h2>📚 Курсы</h2>
+        <p><b>{{ stats.courses }}</b> всего курсов</p>
+    </div>
+
+    <div style="flex: 1; padding: 20px; background: #394764; border-radius: 10px;">
+        <h2>📦 Модули</h2>
+        <p><b>{{ stats.modules }}</b> всего модулей</p>
+    </div>
+
+    <div style="flex: 1; padding: 20px; background: #394764; border-radius: 10px;">
+        <h2>📖 Уроки</h2>
+        <p><b>{{ stats.lessons }}</b> всего уроков</p>
+    </div>
+
+    <div style="flex: 1; padding: 20px; background: #394764; border-radius: 10px;">
+        <h2>👥 Пользователи</h2>
+        <p><b>{{ stats.users }}</b> всего пользователей</p>
+    </div>
+</div>
+{% endblock %}
