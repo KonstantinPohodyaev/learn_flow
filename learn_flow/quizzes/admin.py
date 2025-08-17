@@ -51,7 +51,7 @@ class QuestionSite(admin.ModelAdmin):
     ]
 
 
-@admin.reggister(Answer, site=custom_admin_site)
+@admin.register(Answer, site=custom_admin_site)
 class AnswerAdmin(admin.ModelAdmin):
     list_display = [
         'question__quiz__title',
@@ -70,5 +70,24 @@ class AnswerAdmin(admin.ModelAdmin):
     ]
 
 
-custom_admin_site.register(UserAnswer)
+@admin.register(UserAnswer, site=custom_admin_site)
+class UserAnswerAdmin(admin.ModelAdmin):
+    list_display = [
+        'user__email',
+        'question__text',
+        'answer__text',
+        'answer__is_correct'
+    ]
+    search_fields = [
+        'user__email',
+        'question__is_correct'
+    ]
+    list_filter = [
+        'user__email',
+        'question__is_correct'
+    ]
+    list_display_links = [
+        'user__email'
+    ]
+
 custom_admin_site.register(UserQuizResult)
