@@ -34,8 +34,23 @@ class QuizAdmin(admin.ModelAdmin):
         return quiz.questions.count()
 
 
+@admin.register(Question, site=custom_admin_site)
+class QuestionSite(admin.ModelAdmin):
+    list_display = [
+        'quiz__title',
+        'text'
+    ]
+    search_fields = [
+        'text'
+    ]
+    list_filter = [
+        'text'
+    ]
+    list_display_links = [
+        'text'
+    ]
 
-custom_admin_site.register(Question)
+
 custom_admin_site.register(Answer)
 custom_admin_site.register(UserAnswer)
 custom_admin_site.register(UserQuizResult)
